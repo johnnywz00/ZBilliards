@@ -9,6 +9,13 @@ This game is one of many projects that I undertook in the early days of my progr
   
 I've taken a little time to restructure some things before posting the code here; nonetheless, much about the program remains primitive or suboptimal as it was originally written. Most notably, I hardcoded my graphics to the size of the screen I worked on at the time, and have not taken the pains to refactor the codebase to adapt to all screens; the graphics will probably appear stretched to a greater or lesser extent. 
 
+### FILE DESCRIPTIONS
+* **sfmlApp:**  Implements `main()`, an SFML window and the abstract app
+* **billiards:**  Implements primary graphical elements; physics; game logic
+* **objects:**  Small structs representing balls, pockets, etc.
+* **jwz.h:**  C++ utility functions/#defines, shortcuts
+* **jwzsfml.h:**  Like above, but SFML-specific
+
 ### BUILDING INSTRUCTIONS
 TBA
 
