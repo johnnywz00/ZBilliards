@@ -3,7 +3,7 @@
 
 
 SFGameWindow::SFGameWindow() {
-    setup("Billiards", vecU(defaultWidth, defaultHeight));
+    	setup("Billiards", vecU(defaultWidth, defaultHeight));
 }
 
 SFGameWindow::SFGameWindow(const string& title, const vecU& size) {
@@ -17,19 +17,30 @@ void SFGameWindow::setup(const string& title, const vecU& size) {
 	_isDone = false;
 	_isFocused = true;
 	create();
-	}
+	if (!icon.loadFromFile("media/icon.png")) {
+        	cerr << "Couldn\'t load icon! \n";
+    	}
+    	else
+        	window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+}
 
 void SFGameWindow::create() {
-    VideoMode vm = VideoMode::getDesktopMode();
-    auto fsmodes = VideoMode::getFullscreenModes();
-    VideoMode mode = _isFullscreen ? fsmodes.at(fsmodes.size()-1) : vm;  /////
-    auto style = _isFullscreen ? Style::Fullscreen : Style::Default;
-    window.create( mode, windowTitle, style);
-    if (!icon.loadFromFile("media/icon.png")) {
-        cerr << "Couldn\'t load icon! \n";
-    }
-    else
-        window.setIcon(icon.getSize().x, icon.getSize().y, icon.getPixelsPtr());
+    	VideoMode mode = VideoMode::getDesktopMode();
+	auto style = Style::Default;
+		/* As of SFML 2.6.1, fullscreen modes were not supported on ARM
+		 * Macs. We need to perform a check before unquestioningly switching
+		 * to fullscreen mode.
+		 */
+	if (_isFullscreen) {
+		auto fsmodes = VideoMode::getFullscreenModes();
+		if (fsmodes.size()) {
+			// ** Will we ever need to select a mode other than [0]?
+			mode = fsmodes[0];
+			style = Style::Fullscreen;
+		}
+		else _isFullscreen = false;
+	}
+	window.create(mode, windowTitle, style);
 }
 	
 void SFGameWindow::toggleFullscreen() {
@@ -87,22 +98,14 @@ void Game::update() {
 
 
 int main() {
-        /* XCode folly: two instances of the program are launched if * we customize the working directory. We can cause the extraneous
+        /* XCode folly: two instances of the program are launched if 
+	 * we customize the working directory. We can cause the extraneous
          * instance to silenty quit immediately by giving it a relative
          * path that it can't find.
          */
     Image img;
-   if (!img.loadFromFile("media/icon.png"))
+    if (!img.loadFromFile("media/icon.png"))
         return EXIT_FAILURE;
-    
-        /* Apparently SFML 2.6.1 fullscreen is not properly functional on
-         * ARM Macs; this is for troubleshooting.
-         */
-//    auto ms = VideoMode::getFullscreenModes();
-//    for(size_t i = 0; i < ms.size(); ++i) {
-//        cout << i << ": " << ms[i].width << "-" << ms[i].height << "-" << ms[i].bitsPerPixel << endl;
-//    }
-    
 
     Game game;
     while (!game.getWindow()->isDone()) {
