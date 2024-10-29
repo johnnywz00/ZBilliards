@@ -13,8 +13,8 @@ I've taken a little time to restructure some things before posting the code here
 * **sfmlApp:**  Implements `main()`, an SFML window and the abstract app
 * **billiards:**  Implements primary graphical elements; physics; game logic
 * **objects:**  Small structs representing balls, pockets, etc.
-* **jwz.h:**  C++ utility functions/#defines, shortcuts
-* **jwzsfml.h:**  Like above, but SFML-specific
+* **jwz:**  C++ utility functions/#defines, shortcuts
+* **jwzsfml:**  Like above, but SFML-specific
 
 ### BUILDING INSTRUCTIONS
 TBA
