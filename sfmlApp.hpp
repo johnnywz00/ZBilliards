@@ -61,9 +61,9 @@ private:
     
     void destroy () { window.close(); };
     
-	void setup (const string& title, const vecU& size);
+    void setup (const string& title, const vecU& size);
     
-	void create ();
+    void create ();
     
     Image                   icon;
     RenderWindow            window;
