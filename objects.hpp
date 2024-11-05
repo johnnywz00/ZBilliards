@@ -9,12 +9,15 @@
 #ifndef objects_hpp
 #define objects_hpp
 
-#include "jwzsfml.h"
+#include "jwzsfml.hpp"
 
 
 struct Player {
-    Player(int n = 1) : num(n) { }
-    void reset() {
+    
+    Player (int n = 1) : num(n) { }
+    
+    void reset () {
+        
         isMyTurn = (num == 1);
         onEightBall = false;
         onEightAtLaunch = false;
@@ -41,8 +44,11 @@ struct Player {
 };
 
 
+
 struct Cue  {
-    Cue() {
+    
+    Cue () {
+        
         Texture tex;
         if (!tex.loadFromFile("media/cue.png"))
             cerr << "Couldn't load texture for cue! \n";
@@ -63,20 +69,25 @@ struct Cue  {
 };
 
 
+
 struct Ball {
-    Ball() { }
-    void setVelocity(vecF vec) {
+    
+    Ball () { }
+    
+    void setVelocity (vecF vec) {
+        
         velocity = vec;
         vp = toPolar(velocity);
     }
-    void setVelocity(float x, float y) {
+    void setVelocity (float x, float y) {
+        
         velocity = vecF(x, y);
         vp = toPolar(velocity);
     }
     
     Sprite      s;
-    vecF        velocity{0, 0};
-    vecF        vp{0, 0};
+    vecF        velocity { 0, 0 };
+    vecF        vp { 0, 0 };
     bool        inPocket = false;
     bool        needRespot = false;
     int         color = 1;
@@ -85,13 +96,13 @@ struct Ball {
 
 
 struct Pocket {
-    Pocket() {
-        centerOrigin(s);
-    }
+    
+    Pocket () { centerOrigin(s); }
 
     Sprite      s;
     bool        isCorner = true;
     bool        selected = false;
 };
+
 
 #endif /* objects_hpp */

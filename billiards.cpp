@@ -6,33 +6,30 @@
 //  Copyright © 2024 John Ziegler. All rights reserved.
 //
 
-#include "billiards.h"
+#include "billiards.hpp"
+#include "sfmlApp.hpp"
 
 
-float State::xLoc(int idx) {
+float State::xLoc (int idx) {
+    
     return firstBallLoc.x + (xOff * idx) + (2 * idx);
 }
+
         // determining ball positions in the triangle
-float State::yLoc(int ofs, bool yl /*=false*/) {
+float State::yLoc (int ofs, bool yl /*=false*/) {
+    
     float buffer = 0;
-   if (ofs)
+    if (ofs)
         buffer = (ofs / abs(ofs)) * 1;
     float ret = yLine + (ballRad * ofs + buffer);
-   if (ofs == 2 || ofs == -2)
+    if (ofs == 2 || ofs == -2)
         ret = yLine + buffer * 2 + 3 * ballRad * (ofs / abs(ofs));
-   if (yl && ofs)
+    if (yl && ofs)
         ret += ballRad * (ofs / abs(ofs));
     return ret;
 }
 
-void State::onCreate() {
-    
-        /* The game was created hardcoded to the 1440 x 900 laptop screen
-         * I had at the time. This View keeps the old dimensions
-         * centered on other screens, albeit with some stretch.
-         */
-    View view(FloatRect(0, 0, ScrW, ScrH));
-    w->setView(view);
+void State::onCreate () {
     
     if (!font[0].loadFromFile("media/HelveticaNeue.ttc")) {
          cerr << "Couldn't load font HelveticaNeue! \n";
@@ -80,7 +77,7 @@ void State::onCreate() {
         Ball b = Ball();
         b.s.setTexture(txBall);
         centerOrigin(b.s);
-       if (i == 4) {
+        if (i == 4) {
             b.s.setColor(Color(40, 40, 40));
             b.color = 0;
         }
@@ -91,7 +88,7 @@ void State::onCreate() {
         else if (i % 2)
             b.s.setColor(ballColors[0]);
         else b.s.setColor(ballColors[1]);
-       if (b.s.getColor() == ballColors[1])
+        if (b.s.getColor() == ballColors[1])
             b.color = 2;
         balls.push_back(b);
     }
@@ -223,7 +220,8 @@ void State::onCreate() {
 } //end onCreate
 
 
-void State::reset() {
+void State::reset () {
+    
     for(auto& p:players)
         p.reset();
     curPlayer = &players[0];
@@ -267,7 +265,8 @@ void State::reset() {
     w->setMouseCursorVisible(false);
 }
 
-void State::onMouseDown(int x, int y) {
+void State::onMouseDown (int x, int y) {
+    
    if (!curPlayer->onEightBall || cueBallActive)
         return;
     for (auto& obj : pockets) {
@@ -303,8 +302,11 @@ void State::onMouseDown(int x, int y) {
     }
 }
 
-void State::onKeyPress(Keyboard::Key k) {
+void State::onKeyPress (Keyboard::Key k) {
+    
     switch(k) {
+        case Keyboard::Escape:
+            gw->close();
         case Keyboard::Y:
             reset(); break;
         case Keyboard::U:
@@ -316,37 +318,43 @@ void State::onKeyPress(Keyboard::Key k) {
     }
 }
 
-void State::win(Player& p) {
+void State::win (Player& p) {
+    
     gameOver = true;
     txt.setString("Player " + tS(p.num) + " wins!\n(Y to restart)");
     txt.setFillColor(p.c);
 }
 
-void State::lose(Player& p) {
+void State::lose (Player& p) {
+    
     gameOver = true;
     Player& winner = (players[0].num == p.num ? players[1] : players[0]);
     txt.setString("Player " + tS(winner.num) + " wins!\n(Y to restart)");
     txt.setFillColor(winner.c);
 }
 
-void State::setToCueBall() {
+void State::setToCueBall () {
+    
     cue.cueEnd = cueBall.s.gP();
     cue.s.sP(cue.cueEnd.x - toRect(cue.centerOffset, cue.angle).x,
              cue.cueEnd.y - toRect(cue.centerOffset, cue.angle).y);
     powerBar[1].setScale(1, 0);
 }
 
-void State::moveCueBall(float x, float y) {
+void State::moveCueBall (float x, float y) {
+    
     cueBall.s.move(x, y);
     cue.s.move(x, y);
     cue.cueEnd = cueBall.s.gP();
 }
 
-void State::move8Ball(float x, float y) {
+void State::move8Ball (float x, float y) {
+    
     balls[4].s.move(x, y);
 }
 
-void State::updateGuide() {
+void State::updateGuide () {
+     
     guideline.clear();
     vecF ogn = cueBall.s.gP();
     for(int i = 0; i < guideLength; i += 8) {
@@ -357,7 +365,8 @@ void State::updateGuide() {
     }
 }
 
-void State::animateArrow() {
+void State::animateArrow () {
+    
     float inc = 1;
     calledPocketInd.rotate(arrowPlus ? inc : -inc);
     arrowSkew += (arrowPlus ? inc : -inc);
@@ -371,7 +380,8 @@ void State::animateArrow() {
     }
 }
 
-void State::launch() {
+void State::launch () {
+    
     cueBallActive = true;
     pullingBack = false;
     setToCueBall();
@@ -382,7 +392,8 @@ void State::launch() {
         curPlayer->onEightAtLaunch = true;
 }
 
-void State::pocketBall(Ball& b, Pocket& p) {
+void State::pocketBall (Ball& b, Pocket& p) {
+    
     b.inPocket = true;
     b.setVelocity(0, 0);
     vecF pocketedOfs;
@@ -429,7 +440,8 @@ void State::pocketBall(Ball& b, Pocket& p) {
     }
 }
 
-void State::spotCueBall() {
+void State::spotCueBall () {
+    
     Color c = cueBall.s.getColor();
     c.a = 255;
     cueBall.s.setColor(c);
@@ -454,7 +466,8 @@ void State::spotCueBall() {
     }
 }
 
-void State::respot(Ball& b) {
+void State::respot (Ball& b) {
+    
     b.needRespot = false;
     Color c = b.s.getColor();
     c.a = 255;
@@ -484,7 +497,8 @@ void State::respot(Ball& b) {
     }
 }
 
-void State::frictionAndFindHighSpeed(Ball& cur, float& highSpd) {
+void State::frictionAndFindHighSpeed (Ball& cur, float& highSpd) {
+    
         vecF vpp = cur.vp;
         vpp.x -= fric;
        if (abs(vpp.x) < fricCl)
@@ -494,7 +508,7 @@ void State::frictionAndFindHighSpeed(Ball& cur, float& highSpd) {
             highSpd = vpp.x;
     }
 
-void State::update(const Time& time) {
+void State::update (const Time& time) {
        
     //============== Testing aids =================
     adjustVal(P, collisionLoss, .02, 0, 2);
@@ -877,7 +891,8 @@ void State::update(const Time& time) {
 } //end update
 
 
-void State::draw() {
+void State::draw () {
+    
     w->draw(tableEdge);
     w->draw(tableSurface);
     w->draw(powerBar[0]);
