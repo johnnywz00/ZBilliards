@@ -97,37 +97,37 @@ void Game::update () {
     Event event;
     while (window.window.pollEvent(event)) {
 		vecf adj = window.window.mapPixelToCoords(vecI(event.mouseButton.x,
-													   event.mouseButton.y));
+								event.mouseButton.y));
         switch(event.type) {
 				
             case Event::KeyPressed:
                 switch(event.key.code) {
                     case Keyboard::F5:
                         window.toggleFullscreen();
-					case Keyboard::F6:
-						window.toggleStretchGraphics();
+		    case Keyboard::F6:
+			window.toggleStretchGraphics();
                     default:
                         state.onKeyPress(event.key.code);
                 }
 				
-			case Event::KeyReleased:
-				switch(event.key.code) {
-					default:
-						state.onKeyRelease(event.key.code);
-				}
+	    case Event::KeyReleased:
+		switch(event.key.code) {
+		    default:
+			state.onKeyRelease(event.key.code);
+		}
 				
-			case Event::MouseMoved:
-				state.mx = int(adj.x);
-				state.my = int(adj.y);
-				break;
+	    case Event::MouseMoved:
+		state.mx = int(adj.x);
+		state.my = int(adj.y);
+		break;
 				
             case Event::MouseButtonPressed:
                 state.onMouseDown(int(adj.x), int(adj.y));
-				break;
+		break;
 				
             case Event::MouseButtonReleased:
-				state.onMouseUp(int(adj.x), int(adj.y));
-				break;
+		state.onMouseUp(int(adj.x), int(adj.y));
+		break;
 				
             case Event::Closed:
                 window.close();  break;
@@ -150,7 +150,7 @@ void Game::update () {
 int main () {
 	
         /* XCode folly: two instances of the program are launched if
-		 * we customize the working directory. We can cause the extraneous
+	 * we customize the working directory. We can cause the extraneous
          * instance to silenty quit immediately by giving it a relative
          * path that it can't find.
          */
