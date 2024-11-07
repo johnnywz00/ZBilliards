@@ -109,12 +109,14 @@ void Game::update () {
                     default:
                         state.onKeyPress(event.key.code);
                 }
+		break;
 				
 	    case Event::KeyReleased:
 		switch(event.key.code) {
 		    default:
 			state.onKeyRelease(event.key.code);
 		}
+		break;
 				
 	    case Event::MouseMoved:
 		state.mx = int(adj.x);
