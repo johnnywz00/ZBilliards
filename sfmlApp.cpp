@@ -104,10 +104,13 @@ void Game::update () {
                 switch(event.key.code) {
                     case Keyboard::F5:
                         window.toggleFullscreen();
+			break;
 		    case Keyboard::F6:
 			window.toggleStretchGraphics();
+			break;
                     default:
                         state.onKeyPress(event.key.code);
+			break;
                 }
 		break;
 				
