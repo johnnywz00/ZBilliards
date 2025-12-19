@@ -1,0 +1,181 @@
+
+#ifndef BILLIARDS_H
+#define BILLIARDS_H
+
+
+/*
+ bkgd "carpet"
+ -why collision loss doesn't seem right:
+	got a positive reading once on speed dif after collis. physics must be wrong, magA was computed higher than the top speed of either ball involved
+		(potentially only when multiple balls or rails collide in same frame?)
+		does collision loss need to be proport. to speed: higher speeds seem like they ought to transfer less than they do
+ -blue ball got against wall and started to "creep" after all still: rail bounce physics are crude
+ -adjust first ball on break so more balls spread
+ -can't shoot balls in kitchen
+ */
+
+
+
+
+#include "objects.hpp"
+
+class FuseManager;
+class SFGameWindow;
+
+class State
+{
+public:
+	float SCRW () { return w->getDefaultView().getSize().x; }
+	float SCRH () { return w->getDefaultView().getSize().y; }
+	float SCRCX () { return w->getDefaultView().getSize().x / 2; }
+	float SCRCY () { return w->getDefaultView().getSize().y / 2; }
+	
+    void onCreate ();
+    
+    void reset ();
+    
+    void onMouseDown (int x, int y);
+    
+    void onMouseUp (int x, int y) { }
+    
+    void onKeyPress (Keyboard::Key);
+
+    void onKeyRelease (Keyboard::Key) { }
+
+	void update (const Time&);
+	
+	void draw ();
+	
+	void assembleTable ();
+
+    void win (Player& p);
+    
+    void lose (Player& p);
+    
+    void setToCueBall ();
+    
+    void moveCueBall (float x, float y);
+    
+    void move8Ball (float x, float y);
+    
+    void updateGuide ();
+    
+    void animateArrow ();
+    
+    void launch ();
+    
+    void pocketBall (Ball& b, Pocket& p);
+    
+    void spotCueBall ();
+    
+    void respot (Ball&);
+    
+    void frictionAndFindHighSpeed (Ball& cur, float& highSpd);
+    
+	float xLoc (int idx);
+	
+	float yLoc (int ofs, bool yl=false);
+	
+
+    RenderWindow*       w;
+    SFGameWindow*       gw;
+    FuseManager*        fuseMgr;
+	
+    Font                font[3];
+	SoundBuffer         buffers[4];
+	Sound               sounds[4];
+    Texture				txPocket
+                        , txCueBall
+                        , txBall
+                        , txArrow
+	;
+	RenderTexture		rt;
+
+	Sprite				tabSpr;
+	vector<Pocket>      pockets;
+    Cue                 cue;
+    Ball                cueBall;
+    vector<Ball>        balls;
+	RectangleShape      powerBar[2];
+	VertexArray         guideline { Lines };
+	CircleShape         eightBallInd;
+	Sprite              calledPocketInd;
+ 
+	Player              players[2];
+    Player*             curPlayer;
+    Player*             otherPlayer;
+	Color               ballColors[2];
+
+	Text                txt
+						, instrTxt
+						, playerTxt
+						, splashTitle
+						, splashByline
+	;
+
+	bool    showSplash = true
+			, arrowPlus = true
+			, showInstr = true
+			, running  = true
+			, arrowActive = false
+			, gameOver = false
+			, cueBallActive = false
+			, pullingBack = false
+			, showGuide = false
+			, placingCueBall = false;
+	;
+
+    static constexpr int        ballRad = 15;
+    static constexpr float      yOfs = ballRad * 2;
+    const float                 xOfs = sind(60) * yOfs + 3;
+    int     mx = 0
+            , my = 0
+            , mxOld = 0
+            , myOld = 0
+            , ofs = 6
+            , balls1un = 0
+            , balls2un = 0
+            , balls1unTot = 0
+            , balls2unTot = 0
+	;
+	float	tableWidth = 1173
+			, tableHeight = 587
+            , teThick = 80
+            , firstBallCXOffset = 275
+            , pocketOffset = 42
+	;
+    float   scale = 1
+            , arrowSkew = 0
+            , yLine
+            , speed = 3
+            , angleRate = .5
+            , fastAngleRate = 3.5
+            , powerRate = .5
+            , cueDrawbackRate = 2.7
+            , guideLength = 350
+            , maxPower = 31
+            , speedClamp = .01
+            , friction = .03
+            , collisionLoss = .95
+			, bumperLoss = 1
+	;
+    
+    vecF    		firstBallLoc;
+    vector<vecF>    locList;
+
+    string instrMsg =   
+        "Cue clockwise/ccw -    RIGHT/LEFT ARROW \n"
+        "(Simultaneously hold UP/DOWN ARROW to speed up or slow down) \n"
+        "Shoot -                hold SPACE \n"
+        "Click to select 8-ball pocket \n"
+        "New game -             Y \n"
+        "Pause -                    U \n"
+        "Move cue ball -        A, D, W, S \n"
+        "Show/hide aiming guideline -   I \n"
+        "Show/hide instructions -           R\n"
+        "                                   "
+        "                                   "
+        "John W. Ziegler, 2020-2024  johnnywz00@yahoo.com"
+    ;
+}; //end class State
+#endif
