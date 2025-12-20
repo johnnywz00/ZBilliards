@@ -121,9 +121,9 @@ public:
 			, cueBallActive = false
 			, pullingBack = false
 			, showGuide = false
-			, placingCueBall = false;
+			, placingCueBall = false
+			, isBreakShot = true
 	;
-	bool isBreakShot = true;
 
     static constexpr int        ballRad = 15;
     static constexpr float      yOfs = ballRad * 2 - 1;
