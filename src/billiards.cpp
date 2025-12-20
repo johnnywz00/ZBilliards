@@ -76,6 +76,7 @@ void State::onCreate ()
     playerTxt.setOutlineColor(Color::White);
     playerTxt.setFillColor(Color::White);
     
+		/* Table */
 	yLine = scrcy;
 	assembleTable();
 
@@ -149,7 +150,7 @@ void State::onCreate ()
             b.spr.setColor(Color(40, 40, 40));
             b.color = 0;
         }
-        else if (i == 14 || i % 2)
+        else if (i == 10 || i % 2 && i != 3)
             b.spr.setColor(ballColors[0]);
 		else {
 			b.spr.setColor(ballColors[1]);
@@ -327,6 +328,7 @@ void State::reset ()
     pullingBack = false;
 	placingCueBall = false;
 	arrowPlus = true;
+	isBreakShot = true;
 	arrowSkew = 0;
     balls1un = 0;
     balls2un = 0;
@@ -528,16 +530,6 @@ void State::pocketBall (Ball& b, Pocket& p)
 {
     b.inPocket = true;
     b.setVelocity(0, 0);
-//    vecF pocketedOfs;
-//    int inc = 4;
-//    if (indexOfRef(pockets, p) == 3)
-//        pocketedOfs = vecF(-inc, inc);
-//    if (indexOfRef(pockets, p) == 2)
-//        pocketedOfs = vecF(inc, inc);
-//    if (indexOfRef(pockets, p) == 1)
-//        pocketedOfs = vecF(inc, -inc);
-//    if (indexOfRef(pockets, p) == 0)
-//        pocketedOfs = vecF(-inc, -inc);
     b.spr.sP(p.spr.gP() + p.pocketedOffs);
     Color c = b.spr.getColor();
     c.a = 100;
@@ -556,6 +548,7 @@ void State::pocketBall (Ball& b, Pocket& p)
     else if (!curPlayer->color) {
         curPlayer->pendingSetColor = true;
     }
+	
     if (curPlayer->pendingSetColor) {
        if (b.color == 1)
             ++balls1un;
@@ -664,8 +657,7 @@ void State::update (const Time& time)
     if (gameOver || !running)
         return;
 
-//	if (placingCueBall)
-	{
+	if (placingCueBall)	{
 		if (iKP(A))
 			moveCueBall(-speed, 0);
 		if (iKP(D))
@@ -712,9 +704,12 @@ void State::update (const Time& time)
 			launch();
 		else if (iKP(Space)) {
 			pullingBack = true;
-			cue.power = min(cue.power + powerRate, maxPower);
-			powerBar[1].setScale(1, cue.power / maxPower);
-			if (cue.power < maxPower)
+			float maxPow = maxPower;
+			if (isBreakShot)
+				maxPow += 10;
+			cue.power = min(cue.power + powerRate, maxPow);
+			powerBar[1].setScale(1, cue.power / maxPow);
+			if (cue.power < maxPow)
 				cue.spr.move(toRect(cueDrawbackRate, cue.angle - 180));
 		}
 	}
@@ -827,8 +822,9 @@ void State::update (const Time& time)
 						;
 					//=======================================================
 					
-                    cur.setVelocity(toRRect(max(0.f, magA - collisionLoss), dirA));
-                    cur2.setVelocity(toRRect(max(0.f, magB - collisionLoss), dirB));
+					float loss = isBreakShot ? 0 : collisionLoss;
+                    cur.setVelocity(toRRect(max(0.f, magA - loss), dirA));
+                    cur2.setVelocity(toRRect(max(0.f, magB - loss), dirB));
                     
                 } //end for bb
                 
@@ -905,6 +901,7 @@ void State::update (const Time& time)
                     sounds[3].play();
                     vpp.x = max(0.f, vpp.x - bumperLoss);
                     cur.setVelocity(toRect(vpp));
+					isBreakShot = false;
                 }
             } //end for b
         } //end for i

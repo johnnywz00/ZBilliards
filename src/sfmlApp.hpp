@@ -11,7 +11,7 @@
 
 
 #include "billiards.hpp"
-#include "fusemanager.hpp"
+#include "timedeventmanager.hpp"
 
 
 
@@ -94,11 +94,11 @@ public:
 	void restartClock () { elapsed += clock.restart(); };
 
 private:
-    SFGameWindow     window;
-    FuseManager      fuseMgr;
-    State            state;
-    Clock            clock;
-    Time             elapsed;
+    SFGameWindow     	window;
+    TimedEventManager	timedMgr;
+    State            	state;
+    Clock            	clock;
+    Time             	elapsed;
 };
 
 

@@ -10,7 +10,6 @@
 		(potentially only when multiple balls or rails collide in same frame?)
 		does collision loss need to be proport. to speed: higher speeds seem like they ought to transfer less than they do
  -blue ball got against wall and started to "creep" after all still: rail bounce physics are crude
- -adjust first ball on break so more balls spread
  -can't shoot balls in kitchen
  */
 
@@ -19,7 +18,7 @@
 
 #include "objects.hpp"
 
-class FuseManager;
+class TimedEventManager;
 class SFGameWindow;
 
 class State
@@ -79,7 +78,7 @@ public:
 
     RenderWindow*       w;
     SFGameWindow*       gw;
-    FuseManager*        fuseMgr;
+    TimedEventManager*        timedMgr;
 	
     Font                font[3];
 	SoundBuffer         buffers[4];
@@ -124,10 +123,11 @@ public:
 			, showGuide = false
 			, placingCueBall = false;
 	;
+	bool isBreakShot = true;
 
     static constexpr int        ballRad = 15;
-    static constexpr float      yOfs = ballRad * 2;
-    const float                 xOfs = sind(60) * yOfs + 3;
+    static constexpr float      yOfs = ballRad * 2 - 1;
+    const float                 xOfs = sind(60) * yOfs - 1;
     int     mx = 0
             , my = 0
             , mxOld = 0
@@ -154,9 +154,9 @@ public:
             , cueDrawbackRate = 2.7
             , guideLength = 350
             , maxPower = 31
-            , speedClamp = .01
-            , friction = .03
-            , collisionLoss = .95
+            , speedClamp = .007
+            , friction = .028
+            , collisionLoss = .9
 			, bumperLoss = 1
 	;
     

@@ -58,7 +58,7 @@ Game::Game ()
     srand(unsigned(time(nullptr)));
     state.w = window.getRenderWindow();
 	state.gw = &window;
-	state.fuseMgr = &fuseMgr;
+	state.timedMgr = &timedMgr;
     state.onCreate();
     clock.restart();
 }
