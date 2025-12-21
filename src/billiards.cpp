@@ -355,7 +355,6 @@ void State::update (const Time& time)
 	}
 
 	else {
-		
 			/* Balls are rolling */
 		float 	phi = 0
 				, hyp1 = 0
