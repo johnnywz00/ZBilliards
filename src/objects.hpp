@@ -14,8 +14,6 @@
 
 //#define _EMBEDDING
 
-
-
 struct Player
 {
     Player (int n = 1) : num(n) { }
@@ -102,7 +100,7 @@ struct Pocket {
     Pocket () { centerOrigin(spr); }
 
 	static const int 	offsAbs = 5;
-    bool        		selected = false;
+	bool        		selected = false;
 	vecF				pocketedOffs;
 	Sprite      		spr;
 };

@@ -24,14 +24,7 @@ class SFGameWindow;
 class State
 {
 public:
-	float SCRW () { return w->getDefaultView().getSize().x; }
-	float SCRH () { return w->getDefaultView().getSize().y; }
-	float SCRCX () { return w->getDefaultView().getSize().x / 2; }
-	float SCRCY () { return w->getDefaultView().getSize().y / 2; }
-	
     void onCreate ();
-    
-    void reset ();
     
     void onMouseDown (int x, int y);
     
@@ -45,23 +38,20 @@ public:
 	
 	void draw ();
 	
+private:
 	void assembleTable ();
 
-    void win (Player& p);
-    
-    void lose (Player& p);
-    
-    void setToCueBall ();
-    
+	void reset ();
+	
+	void setToCueBall ();
+	
+	void updateGuide ();
+	
+	void launch ();
+	
+	void frictionAndFindHighSpeed (Ball& cur, float& highSpd);
+	
     void moveCueBall (float x, float y);
-    
-    void move8Ball (float x, float y);
-    
-    void updateGuide ();
-    
-    void animateArrow ();
-    
-    void launch ();
     
     void pocketBall (Ball& b, Pocket& p);
     
@@ -69,17 +59,35 @@ public:
     
     void respot (Ball&);
     
-    void frictionAndFindHighSpeed (Ball& cur, float& highSpd);
-    
+	void animateArrow ();
+	
+	void win (Player& p);
+	
+	void lose (Player& p);
+	
+	/* Determining ball positions in the rack */
 	float xLoc (int idx);
 	
-	float yLoc (int ofs, bool yl=false);
+	float yLoc (int ofs, bool yl =false);
 	
-
+	float SCRW () { return w->getDefaultView().getSize().x; }
+	float SCRH () { return w->getDefaultView().getSize().y; }
+	float SCRCX () { return w->getDefaultView().getSize().x / 2; }
+	float SCRCY () { return w->getDefaultView().getSize().y / 2; }
+	
+	
+	
+public:
     RenderWindow*       w;
     SFGameWindow*       gw;
-    TimedEventManager*        timedMgr;
+    TimedEventManager*  timedMgr;
+	int					mx = 0
+						, my = 0
+						, mxOld = 0
+						, myOld = 0
+	;
 	
+private:
     Font                font[3];
 	SoundBuffer         buffers[4];
 	Sound               sounds[4];
@@ -128,11 +136,7 @@ public:
     static constexpr int        ballRad = 15;
     static constexpr float      yOfs = ballRad * 2 - 1;
     const float                 xOfs = sind(60) * yOfs - 1;
-    int     mx = 0
-            , my = 0
-            , mxOld = 0
-            , myOld = 0
-            , ofs = 6
+	int		ofs = 6
             , balls1un = 0
             , balls2un = 0
             , balls1unTot = 0
@@ -147,7 +151,7 @@ public:
     float   scale = 1
             , arrowSkew = 0
             , yLine
-            , speed = 3
+            , spotSpeed = 3
             , angleRate = .5
             , fastAngleRate = 3.5
             , powerRate = .5
