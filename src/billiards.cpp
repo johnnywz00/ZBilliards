@@ -281,7 +281,7 @@ void State::update (const Time& time)
 //	adjustVal(P, collisionLoss, .02, 0, 2);
 //	adjustVal(LBracket, bumperLoss, .02, 0, 2);
 //	adjustVal(RBracket, friction, .0005, 0, 1);
-	//if (iKP(O)) { curPlayer->onEightBall = true; }
+//	if (iKP(O)) { curPlayer->onEightBall = true; }
 	//===============================================*/
 		
 		/* If no click or keystroke, transition from splash */
