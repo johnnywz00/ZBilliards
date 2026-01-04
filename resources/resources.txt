@@ -1,0 +1,22 @@
+@images
+icon.png 		icon
+arrowicon.png 	arrow
+ball.png 		ball
+cueball.png 	cueBall
+cue.png 		cue
+pocket.png 		pocket
+tabcorn.png 	tableCorner
+
+#repeated
+rail.png 		rail 		repeat
+
+@fonts
+BigBook-Heavy.otf 	player
+HelveticaNeue.ttc 	text
+WarpDrive.otf 		splashTitle
+
+@sounds
+cueshot.wav 	shoot
+hurt2.wav 		pocketBall
+railbump.wav 	railHit
+rockHit2.wav 	ballsHit

@@ -12,82 +12,33 @@ FetchContent_Declare(SFML
     EXCLUDE_FROM_ALL
     SYSTEM)
 FetchContent_MakeAvailable(SFML)
-FetchContent_Declare(jwz-header
-    GIT_REPOSITORY https://github.com/johnnywz00/jwz-header.git
-    GIT_TAG main
-)
-FetchContent_MakeAvailable(jwz-header)
-FetchContent_Declare(jwzsfml-header
-    GIT_REPOSITORY https://github.com/johnnywz00/jwzsfml-header.git
-    GIT_TAG main
-)
-FetchContent_MakeAvailable(jwzsfml-header)
 
-add_executable(${PROJECT_NAME} src/*.cpp)
+FetchContent_Declare(sfml_shared_headers
+    GIT_REPOSITORY https://github.com/johnnywz00/SFML-shared-headers.git
+    GIT_TAG main
+)
+FetchContent_MakeAvailable(sfml_shared_headers)
+
+
+file(GLOB SOURCES "src/*.cpp" "src/*.hpp")
+
+add_executable(${PROJECT_NAME} ${SOURCES})
+
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
-target_include_directories(${PROJECT_NAME} PRIVATE
-	${jwz-header_SOURCE_DIR}
-	${jwzsfml-header_SOURCE_DIR}
+
+target_link_libraries(${PROJECT_NAME} PRIVATE 
+	zsprite resource_manager timed_event_manager jwzsfml jwzhpp
+	sfml-audio sfml-graphics sfml-window sfml-system
 )
-target_link_libraries(${PROJECT_NAME} PRIVATE sfml-audio sfml-graphics)
 
 
-# For all platforms, add install targets
-# If on macOS, bundle the executable into an app bundle
-if(APPLE)
-    # Set variables for Info.plist
-    set(MACOSX_BUNDLE_BUNDLE_NAME ${PROJECT_NAME})  # Short name
-    set(MACOSX_BUNDLE_GUI_IDENTIFIER "com.johnwz.${PROJECT_NAME}")  # com.YOURCOMPANY.YOURAPP
-    set(MACOSX_BUNDLE_BUNDLE_VERSION "1.0")
-    set(MACOSX_BUNDLE_SHORT_VERSION_STRING "1.0")
+add_custom_target(CopyResources ALL
+    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/resources ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/resources
+)
+add_dependencies(${PROJECT_NAME} CopyResources)
 
-    # Generate the Info.plist file
-    configure_file(${CMAKE_SOURCE_DIR}/Info.plist.in ${CMAKE_BINARY_DIR}/Info.plist @ONLY)
 
-    # Set macOS-specific properties
-    set_target_properties(${PROJECT_NAME} PROPERTIES
-        MACOSX_BUNDLE TRUE
-        MACOSX_BUNDLE_INFO_PLIST ${CMAKE_BINARY_DIR}/Info.plist
-        INSTALL_RPATH "@executable_path/../Frameworks"
-        BUILD_WITH_INSTALL_RPATH TRUE
-    )
-
-    # # Copy the icon into the app bundle
-    # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    #     COMMAND ${CMAKE_COMMAND} -E copy
-    #         ${CMAKE_SOURCE_DIR}/Icon.icns
-    #         $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Resources/Icon.icns
-    #     COMMENT "Copying icon to the app bundle"
-    # )
-
-    # Clean up the Frameworks directory before copying
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E remove_directory $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Frameworks
-        COMMAND ${CMAKE_COMMAND} -E make_directory $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Frameworks
-        COMMENT "Cleaning Frameworks directory"
-    )
-
-    # Copy all frameworks into the app bundle
-    add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-        COMMAND rsync -a ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/
-            $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Frameworks/
-        COMMENT "Copying all SFML frameworks into the app bundle"
-    )
-
-    # # Copy only the SFML freetype framework into the app bundle
-    # add_custom_command(TARGET ${PROJECT_NAME} POST_BUILD
-    #     COMMAND rsync -a ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/freetype.framework
-    #         $<TARGET_BUNDLE_DIR:${PROJECT_NAME}>/Contents/Frameworks/
-    #     COMMENT "Copying SFML freetype framework into the app bundle"
-    # )
-
-    # Add install target for macOS app bundle
-    install(TARGETS ${PROJECT_NAME} BUNDLE DESTINATION /Applications)
-else()
-    # Add install target for regular executable
-    install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-endif()
-
+install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 
 if(WIN32)

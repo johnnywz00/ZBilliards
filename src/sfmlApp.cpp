@@ -1,6 +1,6 @@
 
 #include "sfmlApp.hpp"
-
+#include "resourcemanager.hpp"
 
 SFGameWindow::SFGameWindow ()
 {
@@ -40,7 +40,6 @@ void SFGameWindow::create ()
 		else _isFullscreen = false;
 	}
 	window.create(mode, windowTitle, style);
-	View v { window.getDefaultView() };
 	window.setFramerateLimit(60);
 }
 
@@ -123,19 +122,19 @@ void Game::update ()
 }
 
 
-
-int main ()
+int main (int argc, char* argv[])
 {
         /* XCode folly: two instances of the program are launched if
 		 * we customize the working directory. We can cause the extraneous
-         * instance to silenty quit immediately by giving it a relative
+         * instance to silently quit immediately by giving it a relative
          * path that it can't find.
          */
     Image img;
 	if (!img.loadFromFile(iconPath))
         return EXIT_FAILURE;
     
-
+	Resources::initialize(argc, argv);
+	
     Game game;
     while (!game.getWindow()->isDone()) {
         game.update();
