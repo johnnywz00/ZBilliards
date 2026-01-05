@@ -11,16 +11,10 @@
 
 void State::onCreate ()
 {
-		/* Fonts */
-    if (!loadByMethod(font[0], "resources/HelveticaNeue.ttc")) {
-         cerr << "Couldn't load font HelveticaNeue! \n";
-     }
-    if (!loadByMethod(font[1], "resources/BigBook-Heavy.otf")) {
-         cerr << "Couldn't load font BigBook-Heavy! \n";
-     }
-	if (!loadByMethod(font[2], "resources/WarpDrive.otf")) {
-		 cerr << "Couldn't load font Warp Drive! \n";
-	 }
+		/* Fonts
+		 0 text
+		 1 player
+		 2 splashTitle*/
 
 		/* Sounds */
 	loadByMethod(buffers[0], "resources/rockHit2.wav");
