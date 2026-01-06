@@ -27,6 +27,7 @@ file(GLOB SOURCES "src/*.cpp" "src/*.hpp")
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+target_compile_definitions(${PROJECT_NAME} PRIVATE SFML_STATIC)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
 	MACOSX_BUNDLE FALSE
