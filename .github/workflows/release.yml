@@ -19,7 +19,7 @@ jobs:
 
       matrix:
         include:
-          - os: macos-13
+          - os: macos-latest
             # c_compiler: clang
             cpp_compiler: clang++
             input_name: bin/ZBilliards
