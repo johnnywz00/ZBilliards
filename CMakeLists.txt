@@ -2,10 +2,6 @@ cmake_minimum_required(VERSION 3.28)
 project(ZBilliards LANGUAGES CXX)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set_target_properties(${PROJECT_NAME} PROPERTIES
-	MACOSX_BUNDLE FALSE
-	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 
 include(FetchContent)
@@ -29,6 +25,11 @@ file(GLOB SOURCES "src/*.cpp" "src/*.hpp")
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+
+set_target_properties(${PROJECT_NAME} PROPERTIES
+	MACOSX_BUNDLE FALSE
+	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+)
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
 	zsprite resource_manager timed_event_manager jwzsfml jwzhpp
