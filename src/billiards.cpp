@@ -11,50 +11,37 @@
 
 void State::onCreate ()
 {
-		/* Fonts
-		 0 text
-		 1 player
-		 2 splashTitle*/
-
-		/* Sounds */
-	loadByMethod(buffers[0], "resources/rockHit2.wav");
-	sounds[0].setBuffer(buffers[0]);
-	loadByMethod(buffers[1], "resources/cueshot.wav");
-	sounds[1].setBuffer(buffers[1]);
-	loadByMethod(buffers[2], "resources/hurt2.wav");
-	sounds[2].setBuffer(buffers[2]);
-	loadByMethod(buffers[3], "resources/railbump.wav");
-	sounds[3].setBuffer(buffers[3]);
+	app->setRedrawColor(Color::Black);
 
 		/* Splash screen */
 	Color splashGreen = decreaseSaturation(Color::Green, 50);
-	splashTitle = Text("ZBilliards", font[2], 200);
+	splashTitle = Text("ZBilliards", Resources::getFont("splashTitle"), 200);
 	splashTitle.setOutlineThickness(4);
 	splashTitle.setOutlineColor(decreaseBrightness(MUTEDGRASS, 40));
 	splashTitle.setFillColor(splashGreen);
 	centerOrigin(splashTitle);
 	splashTitle.setPosition(scrcx, 200);
 	
-	splashByline = Text("John W. Ziegler, 2020-2024", font[0], 20);
+	splashByline = Text("John W. Ziegler, 2020-2024", Resources::getFont("text"), 20);
 	splashByline.setFillColor(splashGreen);
 	centerOrigin(splashByline);
 	splashByline.setPosition(scrcx, scrh - 70);
 
 		/* Init texts */
-    txt = Text("Player 2 wins!", font[1], 20);
+    txt = Text("Player 2 wins!", Resources::getFont("player"), 20);
     txt.setOrigin(txt.gLB().width / 2, 0);
     txt.setPosition(scrcx, 40);
     txt.setOutlineColor(Color::Green);
     txt.setFillColor(Color::Green);
     txt.setString("");
     
-    instrTxt = Text("", font[0], 12);
+    instrTxt = Text("", Resources::getFont("text"), 12);
     instrTxt.setPosition(30, scrh - 170);
     instrTxt.setOutlineColor(Color(70, 70, 70));
     instrTxt.setFillColor(Color(140, 140, 150));
     instrTxt.setString(instrMsg);
 
-    playerTxt = Text("1", font[1], 40);
+    playerTxt = Text("1", Resources::getFont("player"), 40);
     playerTxt.setPosition(scrw - 80, 40);
     playerTxt.setOutlineColor(Color::White);
     playerTxt.setFillColor(Color::White);
@@ -80,12 +67,9 @@ void State::onCreate ()
 		, {0, Pocket::offsAbs}
 		, {0, -Pocket::offsAbs}
 	};
-	Texture tex;
-	loadByMethod(tex, "resources/pocket.png");
-	txPocket = tex;
 	forNum(6) {
 		Pocket p;
-		p.spr.setTexture(txPocket);
+		p.spr.setTexture(Resources::getTex("pocket"));
 		centerOrigin(p.spr);
 		p.pocketedOffs = pocketedOffsets[i];
 		if (i < 4) {
@@ -104,8 +88,6 @@ void State::onCreate ()
 	}
 
         /* The balls */
-    loadByMethod(tex, "resources/ball.png");
-    txBall = tex;
     ballColors[0] = Color(38, 110, 225);
     ballColors[1] = Color(225, 198, 32);
 	firstBallLoc = {scrcx + firstBallCXOffset, yLine };
@@ -128,7 +110,7 @@ void State::onCreate ()
 	};
     forNum(15) {
         Ball b;
-        b.spr.setTexture(txBall);
+		b.spr.setTexture(Resources::getTex("ball"));
         centerOrigin(b.spr);
         if (i == 4) {	// Eight ball
             b.spr.setColor(Color(40, 40, 40));
@@ -144,9 +126,7 @@ void State::onCreate ()
     }
     
         /* Cue ball */
-    loadByMethod(tex, "resources/cueball.png");
-    txCueBall = tex;
-    cueBall.spr.setTexture(txCueBall);
+	cueBall.spr.setTexture(Resources::getTex("cueBall"));
     centerOrigin(cueBall.spr);
     cueBall.color = 4;
     
@@ -154,9 +134,7 @@ void State::onCreate ()
 	eightBallInd.setRadius(8);
 	eightBallInd.setFillColor(Color(255, 130, 130));
 	eightBallInd.sP(playerTxt.gP() + vecF(-56, 12));
-	loadByMethod(tex, "resources/arrowicon.png");
-	txArrow = tex;
-	calledPocketInd.setTexture(txArrow);
+	calledPocketInd.setTexture(Resources::getTex("arrow"));
 	centerOrigin(calledPocketInd);
 
         /* Power indicator */
@@ -245,7 +223,7 @@ void State::onKeyPress (Keyboard::Key k)
 	switch(k) {
 			
 		case Keyboard::Escape:
-			gw->close();
+			app->close();
 			break;
 		
 		case Keyboard::Y:
@@ -431,8 +409,8 @@ void State::update (const Time& time)
 						/* Whichever ball is going faster, use its velocity
 						 * to approximate the volume of the collision sound
 						 */
-					sounds[0].setVolume(min(100, int(max(cur.vp.x, cur2.vp.x) * 5)));
-					sounds[0].play();
+					Resources::getSound("ballsHit").setVolume(min(100, int(max(cur.vp.x, cur2.vp.x) * 5)));
+					Resources::getSound("ballsHit").play();
 					
 						/* Sphere collision physics */
 					phi = atan2(pos.y - cpos.y, pos.x - cpos.x);
@@ -548,8 +526,8 @@ void State::update (const Time& time)
 						cur.setVelocity(cur.velocity.x, cur.velocity.y * -1);
 					if (hitRail[0] || hitRail[1]) {
 						vecF vpp = cur.vp;
-						sounds[3].setVolume(min(100, int(vpp.x * 5)));
-						sounds[3].play();
+						Resources::getSound("railHit").setVolume(min(100, int(vpp.x * 5)));
+						Resources::getSound("railHit").play();
 						vpp.x = max(0.f, vpp.x - bumperLoss);
 						cur.setVelocity(toRect(vpp));
 						isBreakShot = false;
@@ -617,7 +595,7 @@ void State::update (const Time& time)
 				
 					/* Eight ball went in called pocket with no scratch */
 				if (curPlayer->pendingWin) {
-					win(*curPlayer);
+					winGame(*curPlayer);
 					return;
 				}
 				
@@ -678,9 +656,9 @@ void State::update (const Time& time)
 				playerTxt.setFillColor(curPlayer->c);
 				if (curPlayer->onEightBall)
 						/* Need to be able to click a pocket */
-					w->setMouseCursorVisible(true);
+					win->setMouseCursorVisible(true);
 				else
-					w->setMouseCursorVisible(false);
+					win->setMouseCursorVisible(false);
 			}
 		} //end if allStill
 	} //end if cueBallActive
@@ -690,30 +668,30 @@ void State::draw ()
 {
 		/* Splash screen */
 	if (showSplash) {
-		w->draw(splashTitle);
-		w->draw(splashByline);
+		win->draw(splashTitle);
+		win->draw(splashByline);
 		return;
 	}
 	
-	w->draw(tabSpr);
-	w->draw(powerBar[0]);
-	w->draw(powerBar[1]);
+	win->draw(tabSpr);
+	win->draw(powerBar[0]);
+	win->draw(powerBar[1]);
 	for (auto& p:pockets)
-		w->draw(p.spr);
+		win->draw(p.spr);
 	for (auto& b:balls)
-		w->draw(b.spr);
-	w->draw(cueBall.spr);
-	w->draw(cue.spr);
+		win->draw(b.spr);
+	win->draw(cueBall.spr);
+	win->draw(cue.spr);
 	if (showGuide && !cueBallActive && !gameOver)
-		w->draw(guideline);
-	w->draw(txt);
-	w->draw(playerTxt);
+		win->draw(guideline);
+	win->draw(txt);
+	win->draw(playerTxt);
 	if(showInstr)
-		w->draw(instrTxt);
+		win->draw(instrTxt);
 	if (curPlayer->onEightBall && !gameOver)
-		w->draw(eightBallInd);
+		win->draw(eightBallInd);
 	if (indexWhich(pockets, [&](auto& p) { return p.selected; }) > -1)
-		w->draw(calledPocketInd);
+		win->draw(calledPocketInd);
 }
 
 void State::assembleTable ()
@@ -749,7 +727,7 @@ void State::assembleTable ()
 		 * so use ZImage to modify it before drawing with it
 		 */
 	int darkenVal = 50;
-	tex.loadFromFile("resources/rail.png");
+	tex.loadFromFile(Resources::executingDir() / "resources" / "images" / "rail.png");
 	ZImage zim2 {tex.copyToImage()};
 	zim2.prportDarken(darkenVal);
 	tex.loadFromImage(zim2);
@@ -774,7 +752,7 @@ void State::assembleTable ()
 	rt.draw(railSpr);
 
 		/* Table corners need same color adjustment as rail sprite */
-	tex.loadFromFile("resources/tabcorn.png");
+	tex.loadFromFile(Resources::executingDir() / "resources" / "images" / "tabcorn.png");
 	ZImage zim3 {tex.copyToImage()};
 	zim3.prportDarken(darkenVal);
 	tex.loadFromImage(zim3);
@@ -894,7 +872,7 @@ void State::reset ()
     playerTxt.setString(tS(curPlayer->num));
     playerTxt.setFillColor(curPlayer->c);
     
-    w->setMouseCursorVisible(false);
+    win->setMouseCursorVisible(false);
 }
 
 void State::setToCueBall ()
@@ -925,7 +903,7 @@ void State::launch ()
 	cueBall.spr.setColor(Color::White);
 	cueBall.setVelocity(toRect(cue.power, cue.angle));
 	cue.power = 0;
-	sounds[1].play();
+	Resources::getSound("shoot").play();
 	if (curPlayer->onEightBall)
 		curPlayer->onEightAtLaunch = true;
 }
@@ -968,7 +946,7 @@ void State::pocketBall (Ball& b, Pocket& p)
     Color c = b.spr.getColor();
     c.a = 100;
     b.spr.setColor(c);
-    sounds[2].play();
+    Resources::getSound("pocketBall").play();
 	
     if (b.color == 4) {  //cueBall
        if (curPlayer->onEightAtLaunch)
@@ -1077,7 +1055,7 @@ void State::animateArrow ()
 	}
 }
 
-void State::win (Player& p)
+void State::winGame (Player& p)
 {
 	gameOver = true;
 	txt.setString("Player " + tS(p.num) + " wins!\n(Y to restart)");
