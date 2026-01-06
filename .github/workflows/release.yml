@@ -19,11 +19,11 @@ jobs:
 
       matrix:
         include:
-          - os: macos-latest
+          - os: macos-13
             # c_compiler: clang
             cpp_compiler: clang++
-            input_name: bin/ZBilliards.app
-            output_name: ZBilliards-macos-arm64.app
+            input_name: bin/ZBilliards
+            output_name: ZBilliards-macos-arm64
             archive_name: ZBilliards-macos-arm64.tar.gz
             archive_type: tar
           - os: ubuntu-latest
