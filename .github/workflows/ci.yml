@@ -106,6 +106,6 @@ jobs:
       - name: Release
         # Upload the binary to the release page.
         uses: softprops/action-gh-release@v2
-        #if: startsWith(github.ref, 'refs/tags/')
+        if: startsWith(github.ref, 'refs/tags/')
         with:
           files: ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.archive_name }}
