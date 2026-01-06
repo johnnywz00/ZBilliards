@@ -26,20 +26,20 @@ jobs:
             output_name: ZBilliards-macos-arm64
             archive_name: ZBilliards-macos-arm64.tar.gz
             archive_type: tar
-          - os: ubuntu-latest
-            # c_compiler: gcc
-            cpp_compiler: clang++
-            input_name: bin/ZBilliards
-            output_name: ZBilliards-linux-x86_64
-            archive_name: ZBilliards-linux-x86_64.tar.gz
-            archive_type: tar
-          - os: windows-latest
-            # c_compiler: cl
-            cpp_compiler: cl
-            input_name: bin/Release/ZBilliards.exe
-            output_name: ZBilliards-windows-x86_64.exe
-            archive_name: ZBilliards-windows-x86_64.zip
-            archive_type: zip
+#          - os: ubuntu-latest
+#            # c_compiler: gcc
+#            cpp_compiler: clang++
+#            input_name: bin/ZBilliards
+#            output_name: ZBilliards-linux-x86_64
+#            archive_name: ZBilliards-linux-x86_64.tar.gz
+#            archive_type: tar
+#          - os: windows-latest
+#            # c_compiler: cl
+#            cpp_compiler: cl
+#            input_name: bin/Release/ZBilliards.exe
+#            output_name: ZBilliards-windows-x86_64.exe
+#            archive_name: ZBilliards-windows-x86_64.zip
+#            archive_type: zip
 
     steps:
       - uses: actions/checkout@v4
@@ -91,9 +91,9 @@ jobs:
         # Rename the binary to match the platform.
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         shell: bash
-        run: |
-          echo "Renaming '${{ matrix.input_name }}' to '${{ matrix.output_name }}'"
-          mv "${{ matrix.input_name }}" "${{ matrix.output_name }}"
+        #run: |
+#          echo "Renaming '${{ matrix.input_name }}' to '${{ matrix.output_name }}'"
+#          mv "${{ matrix.input_name }}" "${{ matrix.output_name }}"
 
       - name: Archive binary
         uses: thedoctor0/zip-release@0.7.6
@@ -101,7 +101,8 @@ jobs:
           type: ${{ matrix.archive_type }}
           filename: "${{ matrix.archive_name }}"
           directory: ${{ steps.strings.outputs.build-output-dir }}
-          path: ${{ matrix.output_name }}
+          #path: ${{ matrix.output_name }}
+          path: bin/
 
       - name: Release
         # Upload the binary to the release page.
