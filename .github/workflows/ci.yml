@@ -26,7 +26,7 @@ jobs:
             archive_type: tar
           - os: ubuntu-latest
             # c_compiler: gcc
-            cpp_compiler: g++
+            cpp_compiler: clang++
             input_name: bin/ZBilliards
             output_name: ZBilliards-linux-x86_64
             archive_name: ZBilliards-linux-x86_64.tar.gz
