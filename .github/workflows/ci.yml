@@ -68,6 +68,10 @@ jobs:
         # Set "-DCMAKE_C_COMPILER=${{ matrix.c_compiler }}" for C/C++ projects, otherwise use CXX for C++ only projects.
         run: >
           cmake -B ${{ steps.strings.outputs.build-output-dir }}
+          -G Ninja
+          -DCMAKE_CXX_STANDARD=17
+          -DCMAKE_CXX_STANDARD_REQUIRED=ON
+          -DCMAKE_CXX_EXTENSIONS=OFF
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_BUILD_TYPE=Release
           -DPROJECT_VERSION="${{ github.ref_name }}"
