@@ -727,7 +727,7 @@ void State::assembleTable ()
 		 * so use ZImage to modify it before drawing with it
 		 */
 	int darkenVal = 50;
-	tex.loadFromFile(Resources::executingDir() / "resources" / "images" / "rail.png");
+	tex.loadFromFile((Resources::executingDir() / "resources" / "images" / "rail.png").string());
 	ZImage zim2 {tex.copyToImage()};
 	zim2.prportDarken(darkenVal);
 	tex.loadFromImage(zim2);
@@ -752,7 +752,7 @@ void State::assembleTable ()
 	rt.draw(railSpr);
 
 		/* Table corners need same color adjustment as rail sprite */
-	tex.loadFromFile(Resources::executingDir() / "resources" / "images" / "tabcorn.png");
+	tex.loadFromFile((Resources::executingDir() / "resources" / "images" / "tabcorn.png").string());
 	ZImage zim3 {tex.copyToImage()};
 	zim3.prportDarken(darkenVal);
 	tex.loadFromImage(zim3);
