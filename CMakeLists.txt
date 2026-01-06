@@ -3,6 +3,8 @@ project(ZBilliards LANGUAGES CXX)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
+option(SFML_BUILD_SHARED_LIBS OFF)
+option(SFML_STATIC_LIBRARIES ON)
 
 include(FetchContent)
 FetchContent_Declare(SFML
