@@ -10,9 +10,8 @@
 #define objects_hpp
 
 #include "jwzsfml.hpp"
-#include "embedded.hpp"
+#include "resourcemanager.hpp"
 
-//#define _EMBEDDING
 
 struct Player
 {
@@ -51,10 +50,7 @@ struct Cue
 {
     Cue ()
 	{        
-        Texture tex;
-        loadByMethod(tex, "resources/cue.png");
-        txCue = tex;
-        spr.setTexture(txCue);
+		spr.setTexture(Resources::getTex("cue"));
         centerOrigin(spr);
         spr.sP(300, 300);
         centerOffset = spr.gLB().width / 2 + 30;
@@ -65,7 +61,6 @@ struct Cue
     float       power = 0;
     float       centerOffset;
     vecF        cueEnd;
-	Texture     txCue;
 	Sprite      spr;
 };
 

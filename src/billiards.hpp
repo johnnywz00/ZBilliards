@@ -17,9 +17,9 @@
 
 
 #include "objects.hpp"
+#include "timedeventmanager.hpp"
 
-class TimedEventManager;
-class SFGameWindow;
+class FullscreenOnlyApp;
 
 class State
 {
@@ -61,7 +61,7 @@ private:
     
 	void animateArrow ();
 	
-	void win (Player& p);
+	void winGame (Player& p);
 	
 	void lose (Player& p);
 	
@@ -70,32 +70,22 @@ private:
 	
 	float yLoc (int ofs, bool yl =false);
 	
-	float SCRW () { return w->getDefaultView().getSize().x; }
-	float SCRH () { return w->getDefaultView().getSize().y; }
-	float SCRCX () { return w->getDefaultView().getSize().x / 2; }
-	float SCRCY () { return w->getDefaultView().getSize().y / 2; }
+	float SCRW () { return win->getDefaultView().getSize().x; }
+	float SCRH () { return win->getDefaultView().getSize().y; }
+	float SCRCX () { return win->getDefaultView().getSize().x / 2; }
+	float SCRCY () { return win->getDefaultView().getSize().y / 2; }
 	
 	
 	
 public:
-    RenderWindow*       w;
-    SFGameWindow*       gw;
+    RenderWindow*       win;
+	FullscreenOnlyApp*  app;
     TimedEventManager*  timedMgr;
-	int					mx = 0
-						, my = 0
-						, mxOld = 0
-						, myOld = 0
+	vecI				mouseVec
+						, oldMouse
 	;
 	
 private:
-    Font                font[3];
-	SoundBuffer         buffers[4];
-	Sound               sounds[4];
-    Texture				txPocket
-                        , txCueBall
-                        , txBall
-                        , txArrow
-	;
 	RenderTexture		rt;
 
 	Sprite				tabSpr;
