@@ -13,8 +13,6 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     strategy:
-      # If true, cancel the workflow run if any matrix job fails.
-      # If false, continue to run the workflow and complete all matrix jobs, even if one or more jobs fail.
       fail-fast: true
 
       matrix:
