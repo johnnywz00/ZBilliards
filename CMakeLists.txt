@@ -2,6 +2,7 @@ cmake_minimum_required(VERSION 3.28)
 project(ZBilliards LANGUAGES CXX)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(SFML_USE_SYSTEM_DEPS OFF)
 option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
 option(SFML_BUILD_SHARED_LIBS OFF)
 option(SFML_STATIC_LIBRARIES ON)
