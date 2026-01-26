@@ -2,10 +2,9 @@ cmake_minimum_required(VERSION 3.28)
 project(ZBilliards LANGUAGES CXX)
 
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
-set(SFML_USE_SYSTEM_DEPS OFF)
-option(BUILD_SHARED_LIBS "Build shared libraries" OFF)
-option(SFML_BUILD_SHARED_LIBS OFF)
-option(SFML_STATIC_LIBRARIES ON)
+option(BUILD_SHARED_LIBS "Build shared libraries" ON)
+option(SFML_BUILD_SHARED_LIBS ON)
+option(SFML_STATIC_LIBRARIES OFF)
 
 include(FetchContent)
 FetchContent_Declare(SFML
@@ -28,7 +27,6 @@ file(GLOB SOURCES "src/*.cpp" "src/*.hpp")
 add_executable(${PROJECT_NAME} ${SOURCES})
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
-target_compile_definitions(${PROJECT_NAME} PRIVATE SFML_STATIC)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
 	MACOSX_BUNDLE FALSE
@@ -51,9 +49,77 @@ install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
 
 if(WIN32)
+	if(CMAKE_GENERATOR_PLATFORM MATCHES "x64")
+		set(SFML_ARCH x64)
+	elseif(CMAKE_GENERATOR_PLATFORM MATCHES "Win32")
+		set(SFML_ARCH x86)
+	elseif(CMAKE_GENERATOR_PLATFORM MATCHES "ARM64")
+		set(SFML_ARCH arm64)
+	else()
+		message(FATAL_ERROR "Unsupported Windows platform: ${CMAKE_GENERATOR_PLATFORM}")
+	endif()
+
+	add_custom_command(
+        TARGET ${PROJECT_NAME}
+        POST_BUILD
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${SFML_SOURCE_DIR}/extlibs/bin/${SFML_ARCH}/openal32.dll
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+
+		COMMAND ${CMAKE_COMMAND} -E copy
+            ${SFML_BINARY_DIR}/lib/sfml*.dll
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+
+        VERBATIM
+    )
+
+elseif(APPLE)
     add_custom_command(
         TARGET ${PROJECT_NAME}
-        COMMENT "Copy OpenAL DLL"
-        PRE_BUILD COMMAND ${CMAKE_COMMAND} -E copy ${SFML_SOURCE_DIR}/extlibs/bin/$<IF:$<EQUAL:${CMAKE_SIZEOF_VOID_P},8>,x64,x86>/openal32.dll $<TARGET_FILE_DIR:${PROJECT_NAME}>
-        VERBATIM)
+        POST_BUILD
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${SFML_BINARY_DIR}/lib/libsfml-*.2.6.2.dylib
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/OpenAL.framework/Versions/A/OpenAL
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/FLAC.framework/Versions/A/FLAC
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/freetype.framework/Versions/A/freetype
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/ogg.framework/Versions/A/ogg
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbis*.framework/Versions/A/vorbis*
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/
+
+        VERBATIM
+    )
+
+elseif(UNIX AND NOT APPLE)
+    # Linux: copy SFML .so files into the executable folder
+    add_custom_command(
+        TARGET ${PROJECT_NAME}
+        POST_BUILD
+        
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${SFML_BINARY_DIR}/lib/libsfml*.so.*
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+          
+		COMMAND ${CMAKE_COMMAND} -E copy
+			"${CMAKE_SOURCE_DIR}/Linux README.txt"
+			$<TARGET_FILE_DIR:${PROJECT_NAME}>
+        
+        VERBATIM
+    )
 endif()
