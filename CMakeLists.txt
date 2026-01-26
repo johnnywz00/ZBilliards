@@ -110,23 +110,31 @@ elseif(APPLE)
 
         COMMAND ${CMAKE_COMMAND} -E copy
             ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/OpenAL.framework/Versions/A/OpenAL
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
         COMMAND ${CMAKE_COMMAND} -E copy
             ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/FLAC.framework/Versions/A/FLAC
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
         COMMAND ${CMAKE_COMMAND} -E copy
             ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/freetype.framework/Versions/A/freetype
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
         COMMAND ${CMAKE_COMMAND} -E copy
             ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/ogg.framework/Versions/A/ogg
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
         COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbis*.framework/Versions/A/vorbis*
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/
+            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbis.framework/Versions/A/vorbis
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbisfile.framework/Versions/A/vorbisfile
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbisenc.framework/Versions/A/vorbisenc
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
         VERBATIM
     )
