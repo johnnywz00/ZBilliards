@@ -68,23 +68,44 @@ if(WIN32)
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
 		COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_BINARY_DIR}/lib/sfml*.dll
+            ${SFML_BINARY_DIR}/lib/sfml-audio-2.dll
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+
+		COMMAND ${CMAKE_COMMAND} -E copy
+            ${SFML_BINARY_DIR}/lib/sfml-window-2.dll
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+
+		COMMAND ${CMAKE_COMMAND} -E copy
+            ${SFML_BINARY_DIR}/lib/sfml-graphics-2.dll
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+
+		COMMAND ${CMAKE_COMMAND} -E copy
+            ${SFML_BINARY_DIR}/lib/sfml-system-2.dll
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
         VERBATIM
     )
 
 elseif(APPLE)
-	file(GLOB SFML_DYLIBS
-        "${SFML_BINARY_DIR}/lib/libsfml-*.2.6.2.dylib"
-    )
-    
+
     add_custom_command(
         TARGET ${PROJECT_NAME}
         POST_BUILD
 
         COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_DYLIBS}
+			${SFML_BINARY_DIR}/lib/libsfml-audio.2.6.2.dylib
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+			${SFML_BINARY_DIR}/lib/libsfml-graphics.2.6.2.dylib
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+			${SFML_BINARY_DIR}/lib/libsfml-window.2.6.2.dylib
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+			${SFML_BINARY_DIR}/lib/libsfml-system.2.6.2.dylib
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
         COMMAND ${CMAKE_COMMAND} -E copy
@@ -111,13 +132,24 @@ elseif(APPLE)
     )
 
 elseif(UNIX AND NOT APPLE)
-    # Linux: copy SFML .so files into the executable folder
     add_custom_command(
         TARGET ${PROJECT_NAME}
         POST_BUILD
         
         COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_BINARY_DIR}/lib/libsfml*.so.*
+            ${SFML_BINARY_DIR}/lib/libsfml-audio.so.2.6
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+          
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${SFML_BINARY_DIR}/lib/libsfml-graphics.so.2.6
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+          
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${SFML_BINARY_DIR}/lib/libsfml-window.so.2.6
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+          
+        COMMAND ${CMAKE_COMMAND} -E copy
+            ${SFML_BINARY_DIR}/lib/libsfml-system.so.2.6
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
           
 		COMMAND ${CMAKE_COMMAND} -E copy
