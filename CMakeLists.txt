@@ -50,7 +50,7 @@ install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 if(APPLE)
 	message(STATUS "SFML_BINARY_DIR = ${SFML_BINARY_DIR}")
 	file(GLOB SFML_DYLIBS
-		"${SFML_BINARY_DIR}/lib/libsfml-*.dylib"
+		"${SFML_BINARY_DIR}/lib/*"
 	)
 	message(STATUS "Found SFML dylibs: ${SFML_DYLIBS}")
 endif()
