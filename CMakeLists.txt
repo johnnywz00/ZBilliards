@@ -87,6 +87,13 @@ if(WIN32)
     )
 
 elseif(APPLE)
+	if(APPLE)
+		message(STATUS "SFML_BINARY_DIR = ${SFML_BINARY_DIR}")
+		file(GLOB SFML_DYLIBS
+			"${SFML_BINARY_DIR}/lib/libsfml-*.dylib"
+		)
+		message(STATUS "Found SFML dylibs: ${SFML_DYLIBS}")
+	endif()
 
     add_custom_command(
         TARGET ${PROJECT_NAME}
