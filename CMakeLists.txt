@@ -47,6 +47,13 @@ add_dependencies(${PROJECT_NAME} CopyResources)
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
+if(APPLE)
+	message(STATUS "SFML_BINARY_DIR = ${SFML_BINARY_DIR}")
+	file(GLOB SFML_DYLIBS
+		"${SFML_BINARY_DIR}/lib/libsfml-*.dylib"
+	)
+	message(STATUS "Found SFML dylibs: ${SFML_DYLIBS}")
+endif()
 
 if(WIN32)
 	if(CMAKE_GENERATOR_PLATFORM MATCHES "x64")
@@ -87,13 +94,7 @@ if(WIN32)
     )
 
 elseif(APPLE)
-	if(APPLE)
-		message(STATUS "SFML_BINARY_DIR = ${SFML_BINARY_DIR}")
-		file(GLOB SFML_DYLIBS
-			"${SFML_BINARY_DIR}/lib/libsfml-*.dylib"
-		)
-		message(STATUS "Found SFML dylibs: ${SFML_DYLIBS}")
-	endif()
+
 
     add_custom_command(
         TARGET ${PROJECT_NAME}
