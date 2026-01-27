@@ -13,14 +13,14 @@ FetchContent_Declare(SFML
     GIT_SHALLOW ON
     EXCLUDE_FROM_ALL
     SYSTEM)
+set(SFML_BUILD_SHARED_LIBS ON CACHE BOOL "Build SFML as shared libraries")
+set(SFML_STATIC_LIBRARIES OFF CACHE BOOL "Don't build static SFML libraries")
 FetchContent_MakeAvailable(SFML)
 
 FetchContent_Declare(sfml_shared_headers
     GIT_REPOSITORY https://github.com/johnnywz00/SFML-shared-headers.git
     GIT_TAG main
 )
-set(SFML_BUILD_SHARED_LIBS ON CACHE BOOL "Build SFML as shared libraries")
-set(SFML_STATIC_LIBRARIES OFF CACHE BOOL "Don't build static SFML libraries")
 FetchContent_MakeAvailable(sfml_shared_headers)
 
 
