@@ -15,7 +15,14 @@ FetchContent_Declare(SFML
     SYSTEM)
 set(SFML_BUILD_SHARED_LIBS ON CACHE BOOL "Build SFML as shared libraries")
 set(SFML_STATIC_LIBRARIES OFF CACHE BOOL "Don't build static SFML libraries")
+
 FetchContent_MakeAvailable(SFML)
+
+message(STATUS "SFML_BUILD_SHARED_LIBS = ${SFML_BUILD_SHARED_LIBS}")
+message(STATUS "SFML_STATIC_LIBRARIES = ${SFML_STATIC_LIBRARIES}")
+message(STATUS "SFML_SOURCE_DIR = ${SFML_SOURCE_DIR}")
+message(STATUS "SFML_BINARY_DIR = ${SFML_BINARY_DIR}")
+
 
 FetchContent_Declare(sfml_shared_headers
     GIT_REPOSITORY https://github.com/johnnywz00/SFML-shared-headers.git
