@@ -61,7 +61,7 @@ jobs:
 
       - name: Clear SFML Cache
         run: |
-          rm -rf build/_deps/sfml-build
+          rm -rf build/_deps/sfml-build/*
 
       - name: check cache is gone
         run: |
