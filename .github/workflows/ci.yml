@@ -114,6 +114,10 @@ jobs:
 #          echo "Renaming '${{ matrix.input_name }}' to '${{ matrix.output_name }}'"
 #          mv "${{ matrix.input_name }}" "${{ matrix.output_name }}"
 
+      - name: which libs built
+        run: |
+          ls -la build/_deps/sfml-build/lib
+          
       - name: Archive binary
         uses: thedoctor0/zip-release@0.7.6
         with:
