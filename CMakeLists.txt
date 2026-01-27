@@ -5,6 +5,7 @@ set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(SFML_BUILD_SHARED_LIBS ON)
 option(SFML_STATIC_LIBRARIES OFF)
+set(CMAKE_MACOSX_RPATH ON)
 
 include(FetchContent)
 FetchContent_Declare(SFML
@@ -37,6 +38,8 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 set_target_properties(${PROJECT_NAME} PROPERTIES
 	MACOSX_BUNDLE FALSE
 	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+	INSTALL_RPATH "@executable_path"
+    BUILD_RPATH "@executable_path"
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
