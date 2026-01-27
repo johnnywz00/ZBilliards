@@ -59,10 +59,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-
 
-      - name: Clear SFML Cache
-        run: |
-          rm -rf build/_deps/sfml-build/*
-
+#      - name: Clear SFML Cache
+#        run: |
+#          rm -rf build/_deps/sfml-build/*
+#
       - name: check cache is gone
         run: |
           ls -la build/_deps/sfml-build
