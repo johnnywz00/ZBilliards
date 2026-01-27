@@ -6,6 +6,7 @@ option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(SFML_BUILD_SHARED_LIBS ON)
 option(SFML_STATIC_LIBRARIES OFF)
 set(CMAKE_MACOSX_RPATH ON)
+set(CMAKE_INSTALL_RPATH "@executable_path")
 
 include(FetchContent)
 FetchContent_Declare(SFML
