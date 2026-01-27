@@ -80,6 +80,8 @@ jobs:
           -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
           -DCMAKE_CXX_FLAGS="-stdlib=libc++"
           -DCMAKE_BUILD_TYPE=Release
+          -DSFML_BUILD_SHARED_LIBS=ON
+          -DSFML_STATIC_LIBRARIES=OFF
           -DPROJECT_VERSION="${{ github.ref_name }}"
           -S ${{ github.workspace }}
 
