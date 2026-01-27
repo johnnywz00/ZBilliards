@@ -89,6 +89,7 @@ jobs:
           -DCMAKE_CXX_FLAGS="-stdlib=libc++"
           -DCMAKE_BUILD_TYPE=Release
           -DSFML_BUILD_SHARED_LIBS=ON
+          -DBUILD_SHARED_LIBS=ON
           -DSFML_STATIC_LIBRARIES=OFF
           -DPROJECT_VERSION="${{ github.ref_name }}"
           -S ${{ github.workspace }}
@@ -96,6 +97,10 @@ jobs:
       - name: debug cache
         run: |
           cat build/CMakeCache.txt | grep -i sfml
+
+      - name: read sfml's cmakelists
+        run: |
+          head -50 build/_deps/sfml-src/CMakeLists.txt
           
       - name: Build
         # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
