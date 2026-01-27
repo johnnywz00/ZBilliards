@@ -64,6 +64,10 @@ jobs:
           rm -rf build/_deps/sfml-build/CMakeCache.txt
           rm -rf build/_deps/sfml-build/CMakeFiles
 
+      - name: check cache is gone
+        run: |
+          ls -la build/_deps/sfml-build
+          
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev libfreetype6-dev libfontconfig1-dev libfreetype-dev libsfml-dev
@@ -90,6 +94,10 @@ jobs:
           -DPROJECT_VERSION="${{ github.ref_name }}"
           -S ${{ github.workspace }}
 
+      - name: debug cache
+        run: |
+          cat build/CMakeCache.txt | grep -i sfml
+          
       - name: Build
         # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Release --parallel
