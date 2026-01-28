@@ -143,7 +143,7 @@ elseif(APPLE)
 
         COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
  #[[
         COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/OpenAL.framework
