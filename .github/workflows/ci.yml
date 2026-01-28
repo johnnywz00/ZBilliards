@@ -19,13 +19,13 @@ jobs:
 
       matrix:
         include:
-          - os: macos-latest
-            # c_compiler: clang
-            cpp_compiler: clang++
-            input_name: bin/ZBilliards
-            output_name: ZBilliards-macos-arm64
-            archive_name: ZBilliards-macos-arm64.tar.gz
-            archive_type: tar
+#          - os: macos-latest
+#            # c_compiler: clang
+#            cpp_compiler: clang++
+#            input_name: bin/ZBilliards
+#            output_name: ZBilliards-macos-arm64
+#            archive_name: ZBilliards-macos-arm64.tar.gz
+#            archive_type: tar
           - os: ubuntu-latest
             # c_compiler: gcc
             cpp_compiler: clang++
@@ -62,11 +62,7 @@ jobs:
 #      - name: Clear SFML Cache
 #        run: |
 #          rm -rf build/_deps/sfml-build/*
-#
-      - name: check cache is gone
-        run: |
-          ls -la build/_deps/sfml-build
-          
+#  
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev libfreetype6-dev libfontconfig1-dev libfreetype-dev libsfml-dev
@@ -93,15 +89,7 @@ jobs:
           -DSFML_STATIC_LIBRARIES=OFF
           -DPROJECT_VERSION="${{ github.ref_name }}"
           -S ${{ github.workspace }}
-
-      - name: debug cache
-        run: |
-          cat build/CMakeCache.txt | grep -i sfml
-
-      - name: read sfml's cmakelists
-        run: |
-          head -50 build/_deps/sfml-src/CMakeLists.txt
-          
+  
       - name: Build
         # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Release --parallel
@@ -113,11 +101,7 @@ jobs:
 #        run: |
 #          echo "Renaming '${{ matrix.input_name }}' to '${{ matrix.output_name }}'"
 #          mv "${{ matrix.input_name }}" "${{ matrix.output_name }}"
-
-      - name: which libs built
-        run: |
-          ls -la build/_deps/sfml-build/lib
-          
+ 
       - name: Archive binary
         uses: thedoctor0/zip-release@0.7.6
         with:
