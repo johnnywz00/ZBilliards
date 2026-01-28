@@ -126,6 +126,22 @@ elseif(APPLE)
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
         COMMAND ${CMAKE_COMMAND} -E copy
+			${SFML_BINARY_DIR}/lib/libsfml-audio.2.6.dylib
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+			${SFML_BINARY_DIR}/lib/libsfml-graphics.2.6.dylib
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+			${SFML_BINARY_DIR}/lib/libsfml-window.2.6.dylib
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+
+        COMMAND ${CMAKE_COMMAND} -E copy
+			${SFML_BINARY_DIR}/lib/libsfml-system.2.6.dylib
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+
+        COMMAND ${CMAKE_COMMAND} -E copy
             ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/OpenAL.framework/Versions/A/OpenAL
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
