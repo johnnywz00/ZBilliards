@@ -109,6 +109,15 @@ elseif(APPLE)
         TARGET ${PROJECT_NAME}
         POST_BUILD
 
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+			${SFML_BINARY_DIR}/lib
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
+
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
+
+ #[[
         COMMAND ${CMAKE_COMMAND} -E copy
 			${SFML_BINARY_DIR}/lib/libsfml-audio.2.6.2.dylib
             $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
@@ -144,7 +153,7 @@ elseif(APPLE)
         COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks
             $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
- #[[
+
         COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/OpenAL.framework
             $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
