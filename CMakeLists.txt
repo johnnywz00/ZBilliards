@@ -6,7 +6,7 @@ option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(SFML_BUILD_SHARED_LIBS ON)
 option(SFML_STATIC_LIBRARIES OFF)
 set(CMAKE_MACOSX_RPATH ON)
-set(CMAKE_INSTALL_RPATH "@executable_path;@executable_path/Frameworks;@executable_path/../Frameworks")
+set(CMAKE_INSTALL_RPATH "@executable_path;@executable_path/Frameworks;@executable_path/../Frameworks;@executable_path/../libs")
 
 include(FetchContent)
 FetchContent_Declare(SFML
@@ -39,8 +39,8 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 set_target_properties(${PROJECT_NAME} PROPERTIES
 	MACOSX_BUNDLE FALSE
 	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-	INSTALL_RPATH "@executable_path;@executable_path/Frameworks;@executable_path/../Frameworks"
-    BUILD_RPATH "@executable_path;@executable_path/Frameworks;@executable_path/../Frameworks"
+	INSTALL_RPATH "@executable_path;@executable_path/Frameworks;@executable_path/../Frameworks;;@executable_path/../libs"
+    BUILD_RPATH "@executable_path;@executable_path/Frameworks;@executable_path/../Frameworks;;@executable_path/../libs"
 )
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
@@ -111,35 +111,35 @@ elseif(APPLE)
 
         COMMAND ${CMAKE_COMMAND} -E copy
 			${SFML_BINARY_DIR}/lib/libsfml-audio.2.6.2.dylib
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
 
         COMMAND ${CMAKE_COMMAND} -E copy
 			${SFML_BINARY_DIR}/lib/libsfml-graphics.2.6.2.dylib
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
 
         COMMAND ${CMAKE_COMMAND} -E copy
 			${SFML_BINARY_DIR}/lib/libsfml-window.2.6.2.dylib
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
 
         COMMAND ${CMAKE_COMMAND} -E copy
 			${SFML_BINARY_DIR}/lib/libsfml-system.2.6.2.dylib
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
 
         COMMAND ${CMAKE_COMMAND} -E copy
 			${SFML_BINARY_DIR}/lib/libsfml-audio.2.6.dylib
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
 
         COMMAND ${CMAKE_COMMAND} -E copy
 			${SFML_BINARY_DIR}/lib/libsfml-graphics.2.6.dylib
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
 
         COMMAND ${CMAKE_COMMAND} -E copy
 			${SFML_BINARY_DIR}/lib/libsfml-window.2.6.dylib
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
 
         COMMAND ${CMAKE_COMMAND} -E copy
 			${SFML_BINARY_DIR}/lib/libsfml-system.2.6.dylib
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
 
         COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks
