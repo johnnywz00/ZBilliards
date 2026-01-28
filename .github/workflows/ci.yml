@@ -36,7 +36,7 @@ jobs:
           - os: windows-latest
             # c_compiler: cl
             cpp_compiler: cl
-            input_name: bin/Release/ZBilliards.exe
+            input_name: bin/ZBilliards.exe
             output_name: ZBilliards-windows-x86_64.exe
             archive_name: ZBilliards-windows-x86_64.zip
             archive_type: zip
