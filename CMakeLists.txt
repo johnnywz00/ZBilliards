@@ -142,6 +142,10 @@ elseif(APPLE)
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
         COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+ #[[
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/OpenAL.framework
             $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
 
@@ -168,7 +172,7 @@ elseif(APPLE)
         COMMAND ${CMAKE_COMMAND} -E copy_directory
             ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbisenc.framework
             $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
-
+]]
         VERBATIM
     )
 
