@@ -6,7 +6,7 @@ option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(SFML_BUILD_SHARED_LIBS ON)
 option(SFML_STATIC_LIBRARIES OFF)
 set(CMAKE_MACOSX_RPATH ON)
-set(CMAKE_INSTALL_RPATH "@executable_path")
+set(CMAKE_INSTALL_RPATH "@executable_path;@executable_path/Frameworks")
 
 include(FetchContent)
 FetchContent_Declare(SFML
@@ -39,7 +39,7 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 set_target_properties(${PROJECT_NAME} PROPERTIES
 	MACOSX_BUNDLE FALSE
 	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-	INSTALL_RPATH "@executable_path"
+	INSTALL_RPATH "@executable_path;@executable_path/Frameworks"
     BUILD_RPATH "@executable_path"
 )
 
@@ -141,33 +141,33 @@ elseif(APPLE)
 			${SFML_BINARY_DIR}/lib/libsfml-system.2.6.dylib
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
-        COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/OpenAL.framework/Versions/A/OpenAL
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/OpenAL.framework
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
 
-        COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/FLAC.framework/Versions/A/FLAC
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/FLAC.framework
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
 
-        COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/freetype.framework/Versions/A/freetype
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/freetype.framework
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
 
-        COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/ogg.framework/Versions/A/ogg
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/ogg.framework
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
 
-        COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbis.framework/Versions/A/vorbis
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbis.framework
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
 
-        COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbisfile.framework/Versions/A/vorbisfile
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbisfile.framework
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
 
-        COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbisenc.framework/Versions/A/vorbisenc
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbisenc.framework
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
 
         VERBATIM
     )
