@@ -119,7 +119,8 @@ jobs:
           echo "Working dir parent ls: "
           ls -la ..
           echo "working ../..: "
-          ls -la ../..
+          ls -la ZBilliards/
+          rm -rf *.exe
 
       - name: Archive binary
         uses: thedoctor0/zip-release@0.7.6
