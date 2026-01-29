@@ -114,14 +114,10 @@ jobs:
         run: |
           mv ZBilliards/Release/* ZBilliards/
           rm -rf ZBilliards/Release
-          echo "Working dir ls: "
-          ls -la
-          echo "Start: removing exe?"
-          rm -rf *.exe
-          rm -rf ZBilliards-windows-x86_64.exe
-          rm -rf ./*.exe
-          echo "End removing exe"
-          ls -la
+          rm -rfv *.exe *.zip
+#          rm -rf ZBilliards-windows-x86_64.exe
+#          rm -rf ./*.exe
+#          ls -la
 
       - name: Archive binary
         uses: thedoctor0/zip-release@0.7.6
