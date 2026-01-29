@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.28)
 project(ZBilliards LANGUAGES CXX)
 
-set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/${PROJECT_NAME})
 option(BUILD_SHARED_LIBS "Build shared libraries" ON)
 option(SFML_BUILD_SHARED_LIBS ON)
 option(SFML_STATIC_LIBRARIES OFF)
@@ -51,7 +51,8 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 
 
 add_custom_target(CopyResources ALL
-    COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/resources ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/resources
+    COMMAND ${CMAKE_COMMAND} -E copy_directory
+		${CMAKE_SOURCE_DIR}/resources ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/resources
 )
 add_dependencies(${PROJECT_NAME} CopyResources)
 
@@ -126,7 +127,6 @@ if(WIN32)
     )
 
 elseif(APPLE)
-
 
     add_custom_command(
         TARGET ${PROJECT_NAME}
