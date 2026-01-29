@@ -112,7 +112,7 @@ jobs:
         shell: bash
         if: runner.os == 'Windows'
         run: |
-          mv Release/* .
+          mv ZBilliards/Release/* ZBilliards/
 
       - name: Archive binary
         uses: thedoctor0/zip-release@0.7.6
