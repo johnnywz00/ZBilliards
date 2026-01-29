@@ -116,11 +116,12 @@ jobs:
           rm -rf ZBilliards/Release
           echo "Working dir ls: "
           ls -la
-          echo "Working dir parent ls: "
-          ls -la ..
-          echo "working ../..: "
-          ls -la ZBilliards/
+          echo "Start: removing exe?"
           rm -rf *.exe
+          rm -rf ZBilliards-windows-x86_64.exe
+          rm -rf ./*.exe
+          echo "End removing exe"
+          ls -la
 
       - name: Archive binary
         uses: thedoctor0/zip-release@0.7.6
