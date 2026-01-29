@@ -17,6 +17,7 @@ FetchContent_Declare(SFML
     SYSTEM)
 set(SFML_BUILD_SHARED_LIBS ON CACHE BOOL "Build SFML as shared libraries")
 set(SFML_STATIC_LIBRARIES OFF CACHE BOOL "Don't build static SFML libraries")
+set(SFML_USE_STATIC_STD_LIBS OFF CACHE BOOL "Link SFML against shared runtime")
 
 #FetchContent_MakeAvailable(SFML)
 FetchContent_Populate(SFML)
@@ -71,7 +72,7 @@ message(STATUS "SFML libs: ${SFML_DYLIBS}")
 
 message(STATUS "output dirs: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} ||| ${RUNTIME_OUTPUT_DIRECTORY}")
 
-message(STATUS "buildshared: ${BUILD_SHARED_LIBS}; sfmlbuildshared: ${SFML_BUILD_SHARED_LIBS}; sfmlstatic: ${SFML_STATIC_LIBRARIES}")
+message(STATUS "buildshared: ${BUILD_SHARED_LIBS}; sfmlbuildshared: ${SFML_BUILD_SHARED_LIBS}; sfmlstatic: ${SFML_STATIC_LIBRARIES}; staticstd: ${SFML_USE_STATIC_STD_LIBS}")
 
 if(WIN32)
 	if(NOT CMAKE_GENERATOR_PLATFORM)
