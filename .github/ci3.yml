@@ -1,0 +1,136 @@
+name: Release
+
+on: 
+  workflow_dispatch:
+  release:
+    types: [created]
+  
+permissions:
+  contents: write
+
+jobs:
+  build-and-upload:
+    runs-on: ${{ matrix.os }}
+
+    strategy:
+      # If true, cancel the workflow run if any matrix job fails.
+      # If false, continue to run the workflow and complete all matrix jobs, even if one or more jobs fail.
+      fail-fast: true
+
+      matrix:
+        include:
+#          - os: macos-latest
+#            # c_compiler: clang
+#            cpp_compiler: clang++
+#            input_name: ZBilliards/ZBilliards
+#            output_name: ZBilliards-macos-arm64
+#            archive_name: ZBilliards-macos-arm64.tar.gz
+#            archive_type: tar
+#          - os: ubuntu-latest
+#            # c_compiler: gcc
+#            cpp_compiler: clang++
+#            input_name: ZBilliards/ZBilliards
+#            output_name: ZBilliards-linux-x86_64
+#            archive_name: ZBilliards-linux-x86_64.tar.gz
+#            archive_type: tar
+          - os: windows-latest
+            # c_compiler: cl
+            cpp_compiler: cl
+            input_name: ZBilliards/Release/ZBilliards.exe
+            output_name: ZBilliards-windows-x86_64.exe
+            archive_name: ZBilliards-windows-x86_64.zip
+            archive_type: zip
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set reusable strings
+        # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
+        id: strings
+        shell: bash
+        run: |
+          echo "build-output-dir=${{ github.workspace }}/build" >> "$GITHUB_OUTPUT"
+
+      - name: Cache CMake build directory
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.strings.outputs.build-output-dir }}
+          key: ${{ runner.os }}-build-${{ hashFiles('CMakeLists.txt') }}-${{ hashFiles('cmake/**') }}
+          restore-keys: |
+            ${{ runner.os }}-build-
+
+#      - name: Clear SFML Cache
+#        run: |
+#          rm -rf build/_deps/sfml-build/*
+#  
+      - name: Install Linux dependencies
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev libfreetype6-dev libfontconfig1-dev libfreetype-dev libsfml-dev
+
+      - name: Install clang for Linux
+        if: runner.os == 'Linux'
+        run: sudo apt-get install -y clang-17 libc++-dev libc++abi-dev
+        
+      - name: Configure CMake
+        # Configure CMake in a 'build' subdirectory. `CMAKE_BUILD_TYPE` is only required if you are using a single-configuration generator such as make.
+        # See https://cmake.org/cmake/help/latest/variable/CMAKE_BUILD_TYPE.html?highlight=cmake_build_type
+        # Set the project version to the tag name instead of git commit.
+        # Set "-DCMAKE_C_COMPILER=${{ matrix.c_compiler }}" for C/C++ projects, otherwise use CXX for C++ only projects.
+        run: >
+          cmake -B ${{ steps.strings.outputs.build-output-dir }}
+          -DCMAKE_CXX_STANDARD=17
+          -DCMAKE_CXX_STANDARD_REQUIRED=ON
+          -DCMAKE_CXX_EXTENSIONS=OFF
+          -DCMAKE_CXX_COMPILER=${{ matrix.cpp_compiler }}
+          -DCMAKE_CXX_FLAGS="-stdlib=libc++"
+          -DCMAKE_BUILD_TYPE=Release
+          -DSFML_BUILD_SHARED_LIBS=ON
+          -DBUILD_SHARED_LIBS=ON
+          -DSFML_STATIC_LIBRARIES=OFF
+          -DSFML_USE_STATIC_STD_LIBS=OFF
+          -DPROJECT_VERSION="${{ github.ref_name }}"
+          -S ${{ github.workspace }}
+
+      - name: read cmakelists
+        run: |
+          cat build/_deps/sfml-src/CMakeLists.txt
+          
+      - name: Build
+        # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
+        run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Release --parallel
+
+#      - name: Rename binary
+#        # Rename the binary to match the platform.
+#        working-directory: ${{ steps.strings.outputs.build-output-dir }}
+#        shell: bash
+#        run: |
+#          echo "Renaming '${{ matrix.input_name }}' to '${{ matrix.output_name }}'"
+#          mv "${{ matrix.input_name }}" "${{ matrix.output_name }}"
+
+      - name: (Windows) Get rid of Release directory
+        working-directory: ${{ steps.strings.outputs.build-output-dir }}
+        shell: bash
+        if: runner.os == 'Windows'
+        run: |
+          mv ZBilliards/Release/* ZBilliards/
+          rm -rf ZBilliards/Release
+          rm -rfv *.exe *.zip
+#          rm -rf ZBilliards-windows-x86_64.exe
+#          rm -rf ./*.exe
+#          ls -la
+
+      - name: Archive binary
+        uses: thedoctor0/zip-release@0.7.6
+        with:
+          type: ${{ matrix.archive_type }}
+          filename: "${{ matrix.archive_name }}"
+          directory: ${{ steps.strings.outputs.build-output-dir }}
+          #path: ${{ matrix.output_name }}
+          path: ZBilliards/
+
+      - name: Release
+        # Upload the binary to the release page.
+        uses: softprops/action-gh-release@v2
+        if: startsWith(github.ref, 'refs/tags/')
+        with:
+          files: ${{ steps.strings.outputs.build-output-dir }}/${{ matrix.archive_name }}
