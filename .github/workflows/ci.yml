@@ -87,9 +87,14 @@ jobs:
           -DSFML_BUILD_SHARED_LIBS=ON
           -DBUILD_SHARED_LIBS=ON
           -DSFML_STATIC_LIBRARIES=OFF
+          -DSFML_USE_STATIC_STD_LIBS=OFF
           -DPROJECT_VERSION="${{ github.ref_name }}"
           -S ${{ github.workspace }}
-  
+
+      - name: read cmakelists
+        run: |
+          cat CMakeLists.txt
+          
       - name: Build
         # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Release --parallel
