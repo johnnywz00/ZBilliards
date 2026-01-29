@@ -93,7 +93,7 @@ jobs:
 
       - name: read cmakelists
         run: |
-          cat CMakeLists.txt
+          cat build/_deps/sfml-src/CMakeLists.txt
           
       - name: Build
         # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
