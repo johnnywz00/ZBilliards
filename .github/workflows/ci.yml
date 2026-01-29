@@ -19,20 +19,20 @@ jobs:
 
       matrix:
         include:
-#          - os: macos-latest
-#            # c_compiler: clang
-#            cpp_compiler: clang++
-#            input_name: ZBilliards/ZBilliards
-#            output_name: ZBilliards-macos-arm64
-#            archive_name: ZBilliards-macos-arm64.tar.gz
-#            archive_type: tar
-#          - os: ubuntu-latest
-#            # c_compiler: gcc
-#            cpp_compiler: clang++
-#            input_name: ZBilliards/ZBilliards
-#            output_name: ZBilliards-linux-x86_64
-#            archive_name: ZBilliards-linux-x86_64.tar.gz
-#            archive_type: tar
+          - os: macos-latest
+            # c_compiler: clang
+            cpp_compiler: clang++
+            input_name: ZBilliards/ZBilliards
+            output_name: ZBilliards-macos-arm64
+            archive_name: ZBilliards-macos-arm64.tar.gz
+            archive_type: tar
+          - os: ubuntu-latest
+            # c_compiler: gcc
+            cpp_compiler: clang++
+            input_name: ZBilliards/ZBilliards
+            output_name: ZBilliards-linux-x86_64
+            archive_name: ZBilliards-linux-x86_64.tar.gz
+            archive_type: tar
           - os: windows-latest
             # c_compiler: cl
             cpp_compiler: cl
@@ -114,7 +114,7 @@ jobs:
         run: |
           mv ZBilliards/Release/* ZBilliards/
           rm -rf ZBilliards/Release
-          rm -rf ../*.exe
+          rm -rf ./*.exe
 
       - name: Archive binary
         uses: thedoctor0/zip-release@0.7.6
