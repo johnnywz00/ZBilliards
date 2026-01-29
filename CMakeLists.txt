@@ -88,11 +88,19 @@ if(WIN32)
 	else()
 		message(FATAL_ERROR "Unsupported Windows platform: ${CMAKE_GENERATOR_PLATFORM}")
 	endif()
+	
+	message(STATUS "arch: "${SFML_ARCH}")
 
 	add_custom_command(
         TARGET ${PROJECT_NAME}
         POST_BUILD
 
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+			${sfml_shared_headers_SOURCE_DIR}/sfml-dlls/${SFML_ARCH}
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+
+
+#[[	could not get GitHub runner to build .dlls, so this block doesn't work
         COMMAND ${CMAKE_COMMAND} -E copy
             ${SFML_SOURCE_DIR}/extlibs/bin/${SFML_ARCH}/openal32.dll
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
@@ -112,6 +120,7 @@ if(WIN32)
 		COMMAND ${CMAKE_COMMAND} -E copy
             ${SFML_BINARY_DIR}/lib/Release/sfml-system-2.dll
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
+]]
 
         VERBATIM
     )
