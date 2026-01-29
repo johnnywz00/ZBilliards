@@ -89,7 +89,7 @@ if(WIN32)
 		message(FATAL_ERROR "Unsupported Windows platform: ${CMAKE_GENERATOR_PLATFORM}")
 	endif()
 	
-	message(STATUS "arch: "${SFML_ARCH}")
+	message(STATUS "arch: ${SFML_ARCH}")
 
 	add_custom_command(
         TARGET ${PROJECT_NAME}
