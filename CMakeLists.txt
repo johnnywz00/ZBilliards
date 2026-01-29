@@ -57,10 +57,16 @@ add_dependencies(${PROJECT_NAME} CopyResources)
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
+if(WIN32)
+	file(GLOB SFML_DYLIBS
+		"${SFML_BINARY_DIR}\lib\Release\*"
+	)
+else()
+	file(GLOB SFML_DYLIBS
+		"${SFML_BINARY_DIR}/lib/*"
+	)
+endif()
 
-file(GLOB SFML_DYLIBS
-	"${SFML_BINARY_DIR}/lib/*"
-)
 message(STATUS "Found SFML dylibs: ${SFML_DYLIBS}")
 
 message(STATUS "output dirs: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} ||| ${RUNTIME_OUTPUT_DIRECTORY}")
@@ -89,19 +95,19 @@ if(WIN32)
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
 		COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_BINARY_DIR}/lib/sfml-audio-2.dll
+            ${SFML_BINARY_DIR}\lib\Release\sfml-audio-2.dll
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
 		COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_BINARY_DIR}/lib/sfml-window-2.dll
+            ${SFML_BINARY_DIR}\lib\Release\sfml-window-2.dll
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
 		COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_BINARY_DIR}/lib/sfml-graphics-2.dll
+            ${SFML_BINARY_DIR}\lib\Release\sfml-graphics-2.dll
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
 		COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_BINARY_DIR}/lib/sfml-system-2.dll
+            ${SFML_BINARY_DIR}\lib\Release\sfml-system-2.dll
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
         VERBATIM
