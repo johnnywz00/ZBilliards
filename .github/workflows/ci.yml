@@ -113,6 +113,8 @@ jobs:
         if: runner.os == 'Windows'
         run: |
           mv ZBilliards/Release/* ZBilliards/
+          rm -rf ZBilliards/Release
+          rm -rf ../*.exe
 
       - name: Archive binary
         uses: thedoctor0/zip-release@0.7.6
