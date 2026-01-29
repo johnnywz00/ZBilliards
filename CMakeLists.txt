@@ -38,7 +38,7 @@ target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
 	MACOSX_BUNDLE FALSE
-	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
+	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
 	INSTALL_RPATH "@executable_path;@executable_path/Frameworks;@executable_path/../Frameworks;;@executable_path/../libs;@executable_path/libs"
     BUILD_RPATH "@executable_path;@executable_path/Frameworks;@executable_path/../Frameworks;;@executable_path/../libs;@executable_path/libs"
 )
@@ -57,12 +57,13 @@ add_dependencies(${PROJECT_NAME} CopyResources)
 
 install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
 
-if(APPLE)
-	file(GLOB SFML_DYLIBS
-		"${SFML_BINARY_DIR}/lib/*"
-	)
-	message(STATUS "Found SFML dylibs: ${SFML_DYLIBS}")
-endif()
+
+file(GLOB SFML_DYLIBS
+	"${SFML_BINARY_DIR}/lib/*"
+)
+message(STATUS "Found SFML dylibs: ${SFML_DYLIBS}")
+
+message(STATUS "output dirs: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} ||| ${RUNTIME_OUTPUT_DIRECTORY}")
 
 if(WIN32)
 	if(NOT CMAKE_GENERATOR_PLATFORM)
