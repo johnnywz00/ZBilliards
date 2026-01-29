@@ -67,9 +67,11 @@ else()
 	)
 endif()
 
-message(STATUS "Found SFML dylibs: ${SFML_DYLIBS}")
+message(STATUS "SFML libs: ${SFML_DYLIBS}")
 
 message(STATUS "output dirs: ${CMAKE_RUNTIME_OUTPUT_DIRECTORY} ||| ${RUNTIME_OUTPUT_DIRECTORY}")
+
+message(STATUS "buildshared: ${BUILD_SHARED_LIBS}; sfmlbuildshared: ${SFML_BUILD_SHARED_LIBS}; sfmlstatic: ${SFML_STATIC_LIBRARIES}")
 
 if(WIN32)
 	if(NOT CMAKE_GENERATOR_PLATFORM)
