@@ -77,7 +77,7 @@ message(STATUS "buildshared: ${BUILD_SHARED_LIBS}; sfmlbuildshared: ${SFML_BUILD
 
 if(WIN32)
 	if(NOT CMAKE_GENERATOR_PLATFORM)
-        set(CMAKE_GENERATOR_PLATFORM "x86")
+        set(CMAKE_GENERATOR_PLATFORM "Win32")
     endif()
     
 	if(CMAKE_GENERATOR_PLATFORM MATCHES "x64")
