@@ -22,21 +22,21 @@ jobs:
 #          - os: macos-latest
 #            # c_compiler: clang
 #            cpp_compiler: clang++
-#            input_name: bin/ZBilliards
+#            input_name: ZBilliards/ZBilliards
 #            output_name: ZBilliards-macos-arm64
 #            archive_name: ZBilliards-macos-arm64.tar.gz
 #            archive_type: tar
 #          - os: ubuntu-latest
 #            # c_compiler: gcc
 #            cpp_compiler: clang++
-#            input_name: bin/ZBilliards
+#            input_name: ZBilliards/ZBilliards
 #            output_name: ZBilliards-linux-x86_64
 #            archive_name: ZBilliards-linux-x86_64.tar.gz
 #            archive_type: tar
           - os: windows-latest
             # c_compiler: cl
             cpp_compiler: cl
-            input_name: bin/Release/ZBilliards.exe
+            input_name: ZBilliards/Release/ZBilliards.exe
             output_name: ZBilliards-windows-x86_64.exe
             archive_name: ZBilliards-windows-x86_64.zip
             archive_type: zip
@@ -106,7 +106,14 @@ jobs:
 #        run: |
 #          echo "Renaming '${{ matrix.input_name }}' to '${{ matrix.output_name }}'"
 #          mv "${{ matrix.input_name }}" "${{ matrix.output_name }}"
- 
+
+      - name: (Windows) Get rid of Release directory
+        working-directory: ${{ steps.strings.outputs.build-output-dir }}
+        shell: bash
+        if: runner.os == 'Windows'
+        run: |
+          mv Release/* .
+
       - name: Archive binary
         uses: thedoctor0/zip-release@0.7.6
         with:
@@ -114,7 +121,7 @@ jobs:
           filename: "${{ matrix.archive_name }}"
           directory: ${{ steps.strings.outputs.build-output-dir }}
           #path: ${{ matrix.output_name }}
-          path: bin/
+          path: ZBilliards/
 
       - name: Release
         # Upload the binary to the release page.
