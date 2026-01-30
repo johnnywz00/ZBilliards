@@ -1,6 +1,5 @@
 name: Release
 
-  
 on: 
   workflow_dispatch:
   release:
@@ -13,35 +12,24 @@ jobs:
   build-and-upload:
     runs-on: ${{ matrix.os }}
 
-    env:
-      PROJNAME: ZBilliards
-  
     strategy:
-      # If true, cancel the workflow run if any matrix job fails.
-      # If false, continue to run the workflow and complete all matrix jobs, even if one or more jobs fail.
       fail-fast: true
 
       matrix:
         include:
-#          - os: macos-latest
-#            # c_compiler: clang
-#            cpp_compiler: clang++
-#            input_name: ${{ vars.PROJNAME }}/${{ vars.PROJNAME }}
-#            output_name: ${{ vars.PROJNAME }}-macos-arm64
-#            archive_name: ${{ vars.PROJNAME }}-macos-arm64.tar.gz
-#            archive_type: tar
-#          - os: ubuntu-latest
-#            # c_compiler: gcc
-#            cpp_compiler: clang++
-#            input_name: ${{ vars.PROJNAME }}/${{ vars.PROJNAME }}
-#            output_name: ${{ vars.PROJNAME }}-linux-x86_64
-#            archive_name: ${{ vars.PROJNAME }}-linux-x86_64.tar.gz
-#            archive_type: tar
+          - os: macos-latest
+            # c_compiler: clang
+            cpp_compiler: clang++
+            archive_name: ${{ vars.PROJNAME }}-macos-arm64.tar.gz
+            archive_type: tar
+          - os: ubuntu-latest
+            # c_compiler: gcc
+            cpp_compiler: clang++
+            archive_name: ${{ vars.PROJNAME }}-linux-x86_64.tar.gz
+            archive_type: tar
           - os: windows-latest
             # c_compiler: cl
             cpp_compiler: cl
-            input_name: ${{ vars.PROJNAME }}/Release/${{ vars.PROJNAME }}.exe
-            output_name: ${{ vars.PROJNAME }}-windows-x86_64.exe
             archive_name: ${{ vars.PROJNAME }}-windows-x86_64.zip
             archive_type: zip
 
@@ -49,7 +37,6 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Set reusable strings
-        # Turn repeated input strings (such as the build output directory) into step outputs. These step outputs can be used throughout the workflow file.
         id: strings
         shell: bash
         run: |
@@ -63,10 +50,6 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-build-
 
-#      - name: Clear SFML Cache
-#        run: |
-#          rm -rf build/_deps/sfml-build/*
-#  
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev libfreetype6-dev libfontconfig1-dev libfreetype-dev libsfml-dev
@@ -96,16 +79,7 @@ jobs:
           -S ${{ github.workspace }}
 
       - name: Build
-        # Build your program with the given configuration. Note that --config is needed because the default Windows generator is a multi-config generator (Visual Studio generator).
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Release --parallel
-
-#      - name: Rename binary
-#        # Rename the binary to match the platform.
-#        working-directory: ${{ steps.strings.outputs.build-output-dir }}
-#        shell: bash
-#        run: |
-#          echo "Renaming '${{ matrix.input_name }}' to '${{ matrix.output_name }}'"
-#          mv "${{ matrix.input_name }}" "${{ matrix.output_name }}"
 
       - name: (Windows) Get rid of Release directory
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
@@ -122,11 +96,9 @@ jobs:
           type: ${{ matrix.archive_type }}
           filename: "${{ matrix.archive_name }}"
           directory: ${{ steps.strings.outputs.build-output-dir }}
-          #path: ${{ matrix.output_name }}
           path: ${{ vars.PROJNAME }}/
 
       - name: Release
-        # Upload the binary to the release page.
         uses: softprops/action-gh-release@v2
         if: startsWith(github.ref, 'refs/tags/')
         with:
