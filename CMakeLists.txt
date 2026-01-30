@@ -77,7 +77,7 @@ message(STATUS "buildshared: ${BUILD_SHARED_LIBS}; sfmlbuildshared: ${SFML_BUILD
 
 if(WIN32)
 	if(NOT CMAKE_GENERATOR_PLATFORM)
-        set(CMAKE_GENERATOR_PLATFORM "Win32")
+        set(CMAKE_GENERATOR_PLATFORM "x64")
     endif()
     
 	if(CMAKE_GENERATOR_PLATFORM MATCHES "x64")
@@ -100,29 +100,6 @@ if(WIN32)
 			${sfml_shared_headers_SOURCE_DIR}/sfml-dlls/${SFML_ARCH}
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
-
-#[[	could not get GitHub runner to build .dlls, so this block doesn't work
-        COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_SOURCE_DIR}/extlibs/bin/${SFML_ARCH}/openal32.dll
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
-
-		COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_BINARY_DIR}/lib/Release/sfml-audio-2.dll
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
-
-		COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_BINARY_DIR}/lib/Release/sfml-window-2.dll
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
-
-		COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_BINARY_DIR}/lib/Release/sfml-graphics-2.dll
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
-
-		COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_BINARY_DIR}/lib/Release/sfml-system-2.dll
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
-]]
-
         VERBATIM
     )
 
@@ -140,71 +117,6 @@ elseif(APPLE)
             ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks
             $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
 
- #[[
-        COMMAND ${CMAKE_COMMAND} -E copy
-			${SFML_BINARY_DIR}/lib/libsfml-audio.2.6.2.dylib
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
-
-        COMMAND ${CMAKE_COMMAND} -E copy
-			${SFML_BINARY_DIR}/lib/libsfml-graphics.2.6.2.dylib
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
-
-        COMMAND ${CMAKE_COMMAND} -E copy
-			${SFML_BINARY_DIR}/lib/libsfml-window.2.6.2.dylib
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
-
-        COMMAND ${CMAKE_COMMAND} -E copy
-			${SFML_BINARY_DIR}/lib/libsfml-system.2.6.2.dylib
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
-
-        COMMAND ${CMAKE_COMMAND} -E copy
-			${SFML_BINARY_DIR}/lib/libsfml-audio.2.6.dylib
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
-
-        COMMAND ${CMAKE_COMMAND} -E copy
-			${SFML_BINARY_DIR}/lib/libsfml-graphics.2.6.dylib
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
-
-        COMMAND ${CMAKE_COMMAND} -E copy
-			${SFML_BINARY_DIR}/lib/libsfml-window.2.6.dylib
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
-
-        COMMAND ${CMAKE_COMMAND} -E copy
-			${SFML_BINARY_DIR}/lib/libsfml-system.2.6.dylib
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
-
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
-
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/OpenAL.framework
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
-
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/FLAC.framework
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
-
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/freetype.framework
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
-
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/ogg.framework
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
-
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbis.framework
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
-
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbisfile.framework
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
-
-        COMMAND ${CMAKE_COMMAND} -E copy_directory
-            ${SFML_SOURCE_DIR}/extlibs/libs-osx/Frameworks/vorbisenc.framework
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>/Frameworks/
-]]
         VERBATIM
     )
 
