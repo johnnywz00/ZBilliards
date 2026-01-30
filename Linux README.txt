@@ -1,5 +1,7 @@
 If not already installed, the program will require the following packages:
 
+libc++1
+libc++abi1
 libxrandr-dev 
 libxcursor-dev 
 libudev-dev 
