@@ -18,9 +18,9 @@ FetchContent_Declare(SFML
 set(SFML_BUILD_SHARED_LIBS ON CACHE BOOL "Build SFML as shared libraries")
 set(SFML_STATIC_LIBRARIES OFF CACHE BOOL "Don't build static SFML libraries")
 
-#FetchContent_MakeAvailable(SFML)
-FetchContent_Populate(SFML)
-add_subdirectory(${SFML_SOURCE_DIR} ${SFML_BINARY_DIR})
+FetchContent_MakeAvailable(SFML)
+#FetchContent_Populate(SFML)
+#add_subdirectory(${SFML_SOURCE_DIR} ${SFML_BINARY_DIR})
 
 
 FetchContent_Declare(sfml_shared_headers
@@ -48,23 +48,15 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 	sfml-audio sfml-graphics sfml-window sfml-system
 )
 
-
 add_custom_target(CopyResources ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/resources ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/resources
 )
 add_dependencies(${PROJECT_NAME} CopyResources)
 
-
-install(TARGETS ${PROJECT_NAME} RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR})
-
-if(APPLE)
-	file(GLOB SFML_DYLIBS
-		"${SFML_BINARY_DIR}/lib/*"
-	)
-	message(STATUS "Found SFML dylibs: ${SFML_DYLIBS}")
-endif()
-
 if(WIN32)
+	if(NOT CMAKE_GENERATOR_PLATFORM)
+        set(CMAKE_GENERATOR_PLATFORM "x64")
+    endif()
 	if(CMAKE_GENERATOR_PLATFORM MATCHES "x64")
 		set(SFML_ARCH x64)
 	elseif(CMAKE_GENERATOR_PLATFORM MATCHES "Win32")
@@ -79,31 +71,14 @@ if(WIN32)
         TARGET ${PROJECT_NAME}
         POST_BUILD
 
-        COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_SOURCE_DIR}/extlibs/bin/${SFML_ARCH}/openal32.dll
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
-
-		COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_BINARY_DIR}/lib/sfml-audio-2.dll
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
-
-		COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_BINARY_DIR}/lib/sfml-window-2.dll
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
-
-		COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_BINARY_DIR}/lib/sfml-graphics-2.dll
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
-
-		COMMAND ${CMAKE_COMMAND} -E copy
-            ${SFML_BINARY_DIR}/lib/sfml-system-2.dll
+        COMMAND ${CMAKE_COMMAND} -E copy_directory
+			${sfml_shared_headers_SOURCE_DIR}/sfml-dlls/${SFML_ARCH}
             $<TARGET_FILE_DIR:${PROJECT_NAME}>
 
         VERBATIM
     )
 
 elseif(APPLE)
-
 
     add_custom_command(
         TARGET ${PROJECT_NAME}
