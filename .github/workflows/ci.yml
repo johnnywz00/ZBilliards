@@ -127,7 +127,7 @@ jobs:
         # the currently existing .zip so it gets created afresh in the
         # archiving step.
         run: |
-          mv bin/Release "${{ vars.PROJNAME }}-${{ matrix.os }}"
+          mv bin/Release/* "${{ vars.PROJNAME }}-${{ runner.os }}"
           rm -rfv *.exe *.zip
           
       - name: (Mac/Linux) Rename distro directory
@@ -135,7 +135,7 @@ jobs:
         if: runner.os != 'Windows'
         shell: bash
         run: |
-          mv bin "${{ vars.PROJNAME }}-${{ matrix.os }}"
+          mv bin/* "${{ vars.PROJNAME }}-${{ runner.os }}"
 
       # Create compressed folder of the resulting build
       - name: Archive binary
@@ -149,7 +149,7 @@ jobs:
           # the resulting executable comes out damaged and unopenable.
           # It seems to be fixed just by making sure the executable and 
           # its enclosing folder have different names (?)
-          path: ${{ vars.PROJNAME }}-${{ matrix.os }}/
+          path: ${{ vars.PROJNAME }}-${{ runner.os }}/
 
       # Upload the compressed archive to our GitHub downloads page
       - name: Release
