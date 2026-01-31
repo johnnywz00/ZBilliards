@@ -17,7 +17,7 @@ FetchContent_Declare(SFML
     SYSTEM)
 set(SFML_BUILD_SHARED_LIBS ON CACHE BOOL "Build SFML as shared libraries")
 set(SFML_STATIC_LIBRARIES OFF CACHE BOOL "Don't build static SFML libraries")
-set(SFML_USE_STATIC_STD_LIBS OFF CACHE BOOL "Link SFML against shared runtime")
+#set(SFML_USE_STATIC_STD_LIBS OFF CACHE BOOL "Link SFML against shared runtime")
 
 FetchContent_MakeAvailable(SFML)
 #FetchContent_Populate(SFML)
