@@ -17,20 +17,22 @@ jobs:
 
       matrix:
         include:
-#          - os: macos-latest
-#            # c_compiler: clang
-#            cpp_compiler: clang++
-#            archive_name: ${{ vars.PROJNAME }}-macos-arm64.tar.gz
-#            archive_type: tar
-#          - os: ubuntu-latest
-          - os: [ubuntu-22.04]
-            # c_compiler: gcc
-            cpp_compiler: g++
-            # cpp_compiler: clang++
-            archive_name: ${{ vars.PROJNAME }}-linux-x86_64.tar.gz
+          - os: macos-latest
+            cpp_compiler: clang++
+            archive_name: ${{ vars.PROJNAME }}-macos-arm64.tar.gz
             archive_type: tar
+
+#          - os: ubuntu-latest
+#            cpp_compiler: g++
+#            archive_name: ${{ vars.PROJNAME }}-ubuntu-latest-x86_64.tar.gz
+#            archive_type: tar
+            
+#          - os: [ubuntu-22.04]
+#            cpp_compiler: g++
+#            archive_name: ${{ vars.PROJNAME }}-ubuntu22-x86_64.tar.gz
+#            archive_type: tar
+            
 #          - os: windows-latest
-#            # c_compiler: cl
 #            cpp_compiler: cl
 #            archive_name: ${{ vars.PROJNAME }}-windows-x86_64.zip
 #            archive_type: zip
@@ -55,7 +57,7 @@ jobs:
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
         run: |
-          sudo apt-get update && sudo apt-get install -y libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev libfreetype6-dev libfontconfig1-dev libfreetype-dev libsfml-dev
+          sudo apt-get update && sudo apt-get install -y libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev libfontconfig1-dev libfreetype-dev libsfml-dev
           
 #      - name: Install clang for Linux
 #        if: runner.os == 'Linux'
@@ -96,7 +98,7 @@ jobs:
 
       - name: (Linux) FLAC
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
-        if: runner.os == 'Linux'
+        if: matrix.os == 'ubuntu-22.04'
         run: |
           cp /usr/lib/x86_64-linux-gnu/libFLAC.so.8 ${{ vars.PROJNAME }}/
         
