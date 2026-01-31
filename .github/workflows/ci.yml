@@ -101,6 +101,7 @@ jobs:
         if: matrix.os == 'ubuntu-22.04'
         run: |
           cp /usr/lib/x86_64-linux-gnu/libFLAC.so.8 bin/
+          ls -la bin/
 
       # The next two steps have to do with keeping the layout simple so
       # that no installation is required after downloading/extracting and 
@@ -128,7 +129,7 @@ jobs:
         # archiving step.
         run: |
           mkdir "${{ vars.PROJNAME }}-${{ runner.os }}"
-          mv bin/Release/* "${{ vars.PROJNAME }}-${{ runner.os }}"
+          mv bin/Release/* "${{ vars.PROJNAME }}-${{ runner.os }}"/
           rm -rfv *.exe *.zip
           
       - name: (Mac/Linux) Rename distro directory
@@ -136,6 +137,7 @@ jobs:
         if: runner.os != 'Windows'
         shell: bash
         run: |
+          ls -la bin/
           mkdir "${{ vars.PROJNAME }}-${{ runner.os }}"
           mv bin/* "${{ vars.PROJNAME }}-${{ runner.os }}"
 
