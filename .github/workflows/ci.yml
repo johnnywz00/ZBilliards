@@ -96,7 +96,7 @@ jobs:
       # When building on the Ubuntu-22 runner, the program will need libflac8
       # (instead of 12 or newer) which many Linux setups won't be able to find
       # or install via apt. Include the older .so in the bundle
-      - name: (Linux: older) Bundle older version of FLAC
+      - name: (Older Linux) Bundle older version of FLAC
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         if: matrix.os == 'ubuntu-22.04'
         run: |
