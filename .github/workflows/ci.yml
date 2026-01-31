@@ -110,7 +110,7 @@ jobs:
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         shell: bash
         run: |
-          mv bin "${{ vars.PROJNAME }}f"
+          mv bin "${{ vars.PROJNAME }}-${{ matrix.os }}"
 
       - name: which libs built
         run: |
@@ -123,7 +123,7 @@ jobs:
           filename: "${{ matrix.archive_name }}"
           directory: ${{ steps.strings.outputs.build-output-dir }}
           #path: ${{ matrix.output_name }}
-          path: ${{ vars.PROJNAME }}f/
+          path: ${{ vars.PROJNAME }}-${{ matrix.os }}/
 
       - name: Release
         # Upload the binary to the release page.
