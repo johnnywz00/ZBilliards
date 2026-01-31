@@ -95,9 +95,10 @@ jobs:
           rm -rfv *.exe *.zip
 
       - name: (Linux) FLAC
+        working-directory: ${{ steps.strings.outputs.build-output-dir }}
         if: runner.os == 'Linux'
         run: |
-          ls /usr/lib/
+          ls /usr/lib/x86_64-linux-gnu/
           cp /usr/lib/x86_64-linux-gnu/*FLAC* ${{ vars.PROJNAME }}/
         
       - name: Archive binary
