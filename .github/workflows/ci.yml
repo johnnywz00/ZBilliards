@@ -78,7 +78,6 @@ jobs:
           -DSFML_BUILD_SHARED_LIBS=ON
           -DBUILD_SHARED_LIBS=ON
           -DSFML_STATIC_LIBRARIES=OFF
-          -DSFML_USE_STATIC_STD_LIBS=OFF
           -DPROJECT_VERSION="${{ github.ref_name }}"
           -S ${{ github.workspace }}
 
@@ -108,7 +107,7 @@ jobs:
           type: ${{ matrix.archive_type }}
           filename: "${{ matrix.archive_name }}"
           directory: ${{ steps.strings.outputs.build-output-dir }}
-          path: ${{ vars.PROJNAME }}/
+          path: ZBilliards/
 
       - name: Release
         uses: softprops/action-gh-release@v2
