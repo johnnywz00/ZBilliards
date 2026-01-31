@@ -7,10 +7,10 @@
 # Workflow name
 name: Cross-platform Release
 
-# When does the workflow run
+# Run it whenever a new GitHub release of the repository is created
 on: 
+  workflow_dispatch:
   release:
-    # Run it whenever a new GitHub release of the repository is created
     types: [created]
   
 permissions:
