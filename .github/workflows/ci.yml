@@ -127,6 +127,7 @@ jobs:
         # the currently existing .zip so it gets created afresh in the
         # archiving step.
         run: |
+          mkdir "${{ vars.PROJNAME }}-${{ runner.os }}"
           mv bin/Release/* "${{ vars.PROJNAME }}-${{ runner.os }}"
           rm -rfv *.exe *.zip
           
