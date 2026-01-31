@@ -92,12 +92,13 @@ jobs:
 
       - name: Build
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Release --parallel
+        
       # When building on the Ubuntu-22 runner, the program will need libflac8
       # (instead of 12 or newer) which many Linux setups won't be able to find
       # or install via apt. Include the older .so in the bundle
       - name: (Older Linux) Bundle older version of FLAC
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
-        if: runner.os == 'Linux'
+        if: ${{ runner.os == 'Linux' && matrix.os != 'ubuntu-latest' }}
         run: |
           cp /usr/lib/x86_64-linux-gnu/libFLAC.so.8 bin/
           ls -la bin/
