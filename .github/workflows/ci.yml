@@ -9,7 +9,6 @@ name: Cross-platform Release
 
 # Run it whenever a new GitHub release of the repository is created
 on: 
-  workflow_dispatch:
   release:
     types: [created]
   
@@ -118,8 +117,7 @@ jobs:
       # with the exception that on Mac we can use libs/ and frameworks/
       # instead of keeping the libraries loose because we can set the 
       # rpath while building with cmake.
-      - name: (Windows) Reconfigure directory structure and
-          remove extraneous .exe
+      - name: (Windows) Reconfigure directory structure and remove extraneous .exe
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         shell: bash
         if: runner.os == 'Windows'
