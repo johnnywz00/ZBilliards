@@ -135,6 +135,7 @@ jobs:
         if: runner.os != 'Windows'
         shell: bash
         run: |
+          mkdir "${{ vars.PROJNAME }}-${{ runner.os }}"
           mv bin/* "${{ vars.PROJNAME }}-${{ runner.os }}"
 
       # Create compressed folder of the resulting build
