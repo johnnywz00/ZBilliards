@@ -98,8 +98,7 @@ jobs:
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         if: runner.os == 'Linux'
         run: |
-          ls /usr/lib/x86_64-linux-gnu/
-          cp /usr/lib/x86_64-linux-gnu/*FLAC* ${{ vars.PROJNAME }}/
+          cp /usr/lib/x86_64-linux-gnu/libFLAC.so.8 ${{ vars.PROJNAME }}/
         
       - name: Archive binary
         uses: thedoctor0/zip-release@0.7.6
