@@ -125,7 +125,7 @@ jobs:
           filename: "${{ matrix.archive_name }}"
           directory: ${{ steps.strings.outputs.build-output-dir }}
           #path: ${{ matrix.output_name }}
-          path: bin/
+          path: ZBilliards/
 
       - name: Release
         # Upload the binary to the release page.
