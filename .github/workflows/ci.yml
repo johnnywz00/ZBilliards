@@ -17,11 +17,11 @@ jobs:
 
       matrix:
         include:
-          - os: macos-latest
-            # c_compiler: clang
-            cpp_compiler: clang++
-            archive_name: ${{ vars.PROJNAME }}-macos-arm64.tar.gz
-            archive_type: tar
+#          - os: macos-latest
+#            # c_compiler: clang
+#            cpp_compiler: clang++
+#            archive_name: ${{ vars.PROJNAME }}-macos-arm64.tar.gz
+#            archive_type: tar
 #          - os: ubuntu-latest
           - os: [ubuntu-22.04]
             # c_compiler: gcc
@@ -29,11 +29,11 @@ jobs:
             # cpp_compiler: clang++
             archive_name: ${{ vars.PROJNAME }}-linux-x86_64.tar.gz
             archive_type: tar
-          - os: windows-latest
-            # c_compiler: cl
-            cpp_compiler: cl
-            archive_name: ${{ vars.PROJNAME }}-windows-x86_64.zip
-            archive_type: zip
+#          - os: windows-latest
+#            # c_compiler: cl
+#            cpp_compiler: cl
+#            archive_name: ${{ vars.PROJNAME }}-windows-x86_64.zip
+#            archive_type: zip
 
     steps:
       - uses: actions/checkout@v4
@@ -54,8 +54,9 @@ jobs:
 
       - name: Install Linux dependencies
         if: runner.os == 'Linux'
-        run: sudo apt-get update && sudo apt-get install -y libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev libfreetype6-dev libfontconfig1-dev libfreetype-dev libsfml-dev
-
+        run: |
+          sudo apt-get update && sudo apt-get install -y libxrandr-dev libxcursor-dev libudev-dev libopenal-dev libflac-dev libvorbis-dev libgl1-mesa-dev libegl1-mesa-dev libfreetype6-dev libfontconfig1-dev libfreetype-dev libsfml-dev
+          
 #      - name: Install clang for Linux
 #        if: runner.os == 'Linux'
 #        run: sudo apt-get install -y clang-17 libc++-dev libc++abi-dev
@@ -93,6 +94,12 @@ jobs:
           rm -rf ${{ vars.PROJNAME }}/Release
           rm -rfv *.exe *.zip
 
+      - name: (Linux) FLAC
+        if: runner.os == 'Linux'
+        run: |
+          ls /usr/lib/
+          cp /usr/lib/x86_64-linux-gnu/*FLAC* ${{ vars.PROJNAME }}/
+        
       - name: Archive binary
         uses: thedoctor0/zip-release@0.7.6
         with:
