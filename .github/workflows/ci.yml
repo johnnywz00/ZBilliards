@@ -22,7 +22,8 @@ jobs:
             cpp_compiler: clang++
             archive_name: ${{ vars.PROJNAME }}-macos-arm64.tar.gz
             archive_type: tar
-          - os: ubuntu-latest
+#          - os: ubuntu-latest
+          - os: [ubuntu-22.04]
             # c_compiler: gcc
             cpp_compiler: g++
             # cpp_compiler: clang++
