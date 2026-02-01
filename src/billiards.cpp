@@ -242,6 +242,11 @@ void State::onKeyPress (Keyboard::Key k)
 			showInstr = !showInstr;
 			break;
 		
+		case Keyboard::G:
+			if (isShiftPressed())
+				win->setMouseCursorVisible(false);
+			else win->setMouseCursorVisible(true);
+			
 		default:
 			break;
 	}
@@ -256,7 +261,9 @@ void State::update (const Time& time)
 //	if (iKP(O)) { curPlayer->onEightBall = true; }
 	//===============================================*/
 		
-		/* If no click or keystroke, transition from splash */
+		/* If no click or keystroke, transition from splash
+		 * screen to game after six seconds
+		 */
 	if (time.asSeconds() > 6)
 		showSplash = false;
 	
@@ -313,7 +320,7 @@ void State::update (const Time& time)
 		if (!iKP(Space) && pullingBack)
 			launch();
 		
-			/* Spacebar is being held down: drawback in progress */
+			/* Space bar is being held down: drawback in progress */
 		else if (iKP(Space)) {
 			pullingBack = true;
 			float maxPow = maxPower;
@@ -482,9 +489,9 @@ void State::update (const Time& time)
 					/* Ball is near left-right centerline of table */
 				else if (isOrBetween(pos.x, scrcx - hpw, scrcx + hpw)) {
 					if (pos.y < ten + 2)
-						pocketBall(cur, pockets[5]);
+						pocketBall(cur, pockets[5]); //N
 					else if (pos.y > tes - 2)
-						pocketBall(cur, pockets[4]);
+						pocketBall(cur, pockets[4]); //S
 				}
 				
 					/* If it didn't get pocketed, check for hitting a rail */
@@ -546,7 +553,8 @@ void State::update (const Time& time)
 			}
 		}
 		
-			/* Balls are all done rolling. Take appropriate actions
+			/* Balls have collectively just passed from
+			 * movement to stillness. Take appropriate actions
 			 * based on anything that has been pocketed, and
 			 * get ready for another shot
 			 */
@@ -654,12 +662,12 @@ void State::update (const Time& time)
 				swap(curPlayer, otherPlayer);
 				playerTxt.setString(tS(curPlayer->num));
 				playerTxt.setFillColor(curPlayer->c);
-				if (curPlayer->onEightBall)
-						/* Need to be able to click a pocket */
-					win->setMouseCursorVisible(true);
-				else
-					win->setMouseCursorVisible(false);
 			}
+			if (curPlayer->onEightBall)
+					/* Need to be able to click a pocket */
+				win->setMouseCursorVisible(true);
+			else
+				win->setMouseCursorVisible(false);
 		} //end if allStill
 	} //end if cueBallActive
 } //end update
@@ -881,6 +889,7 @@ void State::setToCueBall ()
     cue.spr.sP(cue.cueEnd.x - toRect(cue.centerOffset, cue.angle).x,
              cue.cueEnd.y - toRect(cue.centerOffset, cue.angle).y);
     powerBar[1].setScale(1, 0);
+	updateGuide();
 }
 
 void State::updateGuide () {
@@ -906,6 +915,7 @@ void State::launch ()
 	Resources::getSound("shoot").play();
 	if (curPlayer->onEightBall)
 		curPlayer->onEightAtLaunch = true;
+	win->setMouseCursorVisible(false);
 }
 
 void State::frictionAndFindHighSpeed (Ball& cur, float& highSpd)
@@ -933,9 +943,11 @@ void State::moveCueBall (float x, float y)
 	
 	vecf newPos {clamp(oldPos.x + x, tew, kitchen),
 				clamp(oldPos.y + y, ten, tes)};
-    cueBall.spr.setPosition(newPos);
+	cueBall.spr.setPosition(newPos);
     cue.spr.move(newPos - oldPos);
     cue.cueEnd = cueBall.spr.gP();
+	
+	updateGuide();
 }
 
 void State::pocketBall (Ball& b, Pocket& p)
@@ -1006,6 +1018,7 @@ void State::spotCueBall ()
     }
 	while (checkAgain);
 	placingCueBall = true;
+	updateGuide();
 }
 
 void State::respot (Ball& b)

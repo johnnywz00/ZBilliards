@@ -166,6 +166,7 @@ private:
         "Pause -                    U \n"
         "Move cue ball -        A, D, W, S \n"
         "Show/hide aiming guideline -   I \n"
+		"Show/hide cursor -                   G / Shift + G\n"
         "Show/hide instructions -           R\n"
         "                                   "
         "                                   "
