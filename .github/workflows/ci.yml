@@ -29,7 +29,7 @@ jobs:
           - os: macos-latest
             cpp_compiler: clang++
             # If building Mac version as an .app bundle, using zip compression
-            # can result in unnecessary duplicaiton of dependency files, causing
+            # can result in unnecessary duplication of dependency files, causing
             # significant bloat in the product size. Best keep as tar
             archive_type: tar
             archive_name: ${{ vars.PROJNAME }}-macos-arm64.tar.gz
