@@ -100,8 +100,7 @@ jobs:
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         if: ${{ runner.os == 'Linux' && matrix.os != 'ubuntu-latest' }}
         run: |
-          cp /usr/lib/x86_64-linux-gnu/libFLAC.so.8 bin/
-          ls -la bin/
+          cp /usr/lib/x86_64-linux-gnu/libFLAC.so.8 bin/libs/
 
       # The next two steps have to do with keeping the layout simple so
       # that no installation is required after downloading/extracting and 
@@ -137,7 +136,6 @@ jobs:
         if: runner.os != 'Windows'
         shell: bash
         run: |
-          ls -la bin/
           mkdir "${{ vars.PROJNAME }}-${{ runner.os }}"
           mv bin/* "${{ vars.PROJNAME }}-${{ runner.os }}"
 
