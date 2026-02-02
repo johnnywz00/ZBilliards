@@ -93,15 +93,21 @@ jobs:
       - name: Build
         run: cmake --build ${{ steps.strings.outputs.build-output-dir }} --config Release --parallel
         
-      # When building on the Ubuntu-22 runner, the program will need libflac8
+      # When building on the Ubuntu-22 runner, the program will need FLAC 8
       # (instead of 12 or newer) which many Linux setups won't be able to find
-      # or install via apt. Include the older .so in the bundle
+      # or install via apt. Include the older .so in the bundle. Then, the
+      # SFML .so's RUNPATH will be hardcoded to a location on this GitHub
+      # runner, so it won't find FLAC 8 unless we use patchelf to set the 
+      # SFML .so's RUNPATH to its own directory (given that we're trying to 
+      # avoid having to use LD_LIBRARY_PATH=. to run the program.)
       - name: (Older Linux) Bundle older version of FLAC
         working-directory: ${{ steps.strings.outputs.build-output-dir }}
         if: ${{ runner.os == 'Linux' && matrix.os != 'ubuntu-latest' }}
         run: |
           cp /usr/lib/x86_64-linux-gnu/libFLAC.so.8 bin/libs/
-
+          sudo apt-get install -y patchelf
+          patchelf --set-rpath '$ORIGIN' bin/libs/libsfml-audio.so.2.6
+          
       # The next two steps have to do with keeping the layout simple so
       # that no installation is required after downloading/extracting and 
       # so that the executable file can find all of its libraries and 
