@@ -26,3 +26,4 @@ Ready-made program files are available on the Releases page of this repository, 
    cmake -B build
    cmake --build build
 </pre>
+The program will be found in [clone_root]/build/bin/. 
