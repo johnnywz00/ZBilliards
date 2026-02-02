@@ -46,7 +46,7 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 )
 
 if(UNIX AND NOT APPLE)
-    target_link_options(MyGame PRIVATE
+    target_link_options(${PROJECT_NAME} PRIVATE
         "LINKER:-rpath,$ORIGIN/libs"
     )
 endif()
