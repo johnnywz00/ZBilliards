@@ -103,6 +103,9 @@ elseif(UNIX AND NOT APPLE)
         TARGET ${PROJECT_NAME}
         POST_BUILD
         
+		COMMAND ${CMAKE_COMMAND} -E make_directory
+			$<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
+        
         COMMAND ${CMAKE_COMMAND} -E copy
             ${SFML_BINARY_DIR}/lib/libsfml-audio.so.2.6
             $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
