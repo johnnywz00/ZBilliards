@@ -13,6 +13,7 @@ I've taken a little time to restructure some things before posting the code here
 * **sfmlApp:**  Implements `main()` and the abstract app
 * **billiards:**  Implements primary graphical elements; physics; game logic
 * **objects:**  Small structs representing balls, pockets, etc.
+  
 (From my "reusable modules" repo: github.com/johnnywz00/SFML-shared-headers)
 * **jwz:**  C++ utility functions, #defines, shortcuts
 * **jwzsfml:**  Like above, but SFML-specific
@@ -21,5 +22,7 @@ I've taken a little time to restructure some things before posting the code here
 Ready-made program files are available on the Releases page of this repository, with versions for MacOS, Windows, and Linux. If you have reasons for building from source:
 - Clone this repository, and navigate to the root folder of that clone in a terminal window.
 - Run:
+<pre>
    cmake -B build
    cmake --build build
+</pre>
