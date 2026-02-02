@@ -34,22 +34,27 @@ add_executable(${PROJECT_NAME} ${SOURCES})
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
 
 set_target_properties(${PROJECT_NAME} PROPERTIES
-	MACOSX_BUNDLE FALSE
 	RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin
-	INSTALL_RPATH "@executable_path;@executable_path/Frameworks;@executable_path/../Frameworks;;@executable_path/../libs;@executable_path/libs"
-    BUILD_RPATH "@executable_path;@executable_path/Frameworks;@executable_path/../Frameworks;;@executable_path/../libs;@executable_path/libs"
 )
+
+if(APPLE)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+		MACOSX_BUNDLE FALSE
+		INSTALL_RPATH "@executable_path;@executable_path/Frameworks;@executable_path/../Frameworks;;@executable_path/../libs;@executable_path/libs"
+		BUILD_RPATH "@executable_path;@executable_path/Frameworks;@executable_path/../Frameworks;;@executable_path/../libs;@executable_path/libs"
+	)
+
+elseif(UNIX AND NOT APPLE)
+    set_target_properties(${PROJECT_NAME} PROPERTIES
+        INSTALL_RPATH "$ORIGIN;$ORIGIN/libs"
+        BUILD_WITH_INSTALL_RPATH TRUE
+    )
+endif()
 
 target_link_libraries(${PROJECT_NAME} PRIVATE 
 	zsprite resource_manager timed_event_manager jwzsfml jwzhpp
 	sfml-audio sfml-graphics sfml-window sfml-system
 )
-
-if(UNIX AND NOT APPLE)
-    target_link_options(${PROJECT_NAME} PRIVATE
-        "LINKER:-rpath,$ORIGIN/libs"
-    )
-endif()
 
 add_custom_target(CopyResources ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/resources ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/resources
