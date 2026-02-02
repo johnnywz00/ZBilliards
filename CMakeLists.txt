@@ -45,6 +45,12 @@ target_link_libraries(${PROJECT_NAME} PRIVATE
 	sfml-audio sfml-graphics sfml-window sfml-system
 )
 
+if(UNIX AND NOT APPLE)
+    target_link_options(MyGame PRIVATE
+        "LINKER:-rpath,$ORIGIN/libs"
+    )
+endif()
+
 add_custom_target(CopyResources ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_SOURCE_DIR}/resources ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}/resources
 )
@@ -99,19 +105,19 @@ elseif(UNIX AND NOT APPLE)
         
         COMMAND ${CMAKE_COMMAND} -E copy
             ${SFML_BINARY_DIR}/lib/libsfml-audio.so.2.6
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
           
         COMMAND ${CMAKE_COMMAND} -E copy
             ${SFML_BINARY_DIR}/lib/libsfml-graphics.so.2.6
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
           
         COMMAND ${CMAKE_COMMAND} -E copy
             ${SFML_BINARY_DIR}/lib/libsfml-window.so.2.6
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
           
         COMMAND ${CMAKE_COMMAND} -E copy
             ${SFML_BINARY_DIR}/lib/libsfml-system.so.2.6
-            $<TARGET_FILE_DIR:${PROJECT_NAME}>
+            $<TARGET_FILE_DIR:${PROJECT_NAME}>/libs/
           
 		COMMAND ${CMAKE_COMMAND} -E copy
 			"${CMAKE_SOURCE_DIR}/Linux README.txt"
