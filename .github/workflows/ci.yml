@@ -120,7 +120,7 @@ jobs:
       #   -lib1
       #   -lib2...
       #
-      # with the exception that on Mac we can use libs/ and frameworks/
+      # with the exception that on Mac and Linux we can use libs/ and frameworks/
       # instead of keeping the libraries loose because we can set the 
       # rpath while building with cmake.
       - name: (Windows) Reconfigure directory structure and remove extraneous .exe
