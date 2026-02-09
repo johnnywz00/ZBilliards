@@ -1,6 +1,6 @@
 # ZBilliards
 
-## SFML (C++) billiards game
+## C++/SFML billiards game
 
 <img width="2758" height="1566" alt="image" src="https://github.com/user-attachments/assets/3aa9f458-98ec-49f0-a364-ed5fe10eb101" />
 
