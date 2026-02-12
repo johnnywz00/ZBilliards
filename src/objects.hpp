@@ -11,6 +11,7 @@
 
 #include "jwzsfml.hpp"
 #include "resourcemanager.hpp"
+#include "timedeventmanager.hpp"
 
 
 struct Player

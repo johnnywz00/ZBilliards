@@ -17,7 +17,6 @@
 
 
 #include "objects.hpp"
-#include "timedeventmanager.hpp"
 
 class FullscreenOnlyApp;
 
@@ -39,6 +38,17 @@ public:
 	void draw ();
 	
 private:
+	static constexpr int        ballRad = 15;
+	static constexpr float      yOfs = ballRad * 2 - 1;
+	const float                 xOfs = sind(60) * yOfs - 1
+								, tableWidth = 1173
+								, tableHeight = 587
+								, teThick = 80
+								, firstBallCXOffset = 275
+								, pocketOffset = 42
+	;
+	const int					ofs = 6;
+			
 	void assembleTable ();
 
 	void reset ();
@@ -67,15 +77,8 @@ private:
 	
 	/* Determining ball positions in the rack */
 	float xLoc (int idx);
-	
 	float yLoc (int ofs, bool yl =false);
-	
-	float SCRW () { return win->getDefaultView().getSize().x; }
-	float SCRH () { return win->getDefaultView().getSize().y; }
-	float SCRCX () { return win->getDefaultView().getSize().x / 2; }
-	float SCRCY () { return win->getDefaultView().getSize().y / 2; }
-	
-	
+		
 	
 public:
     RenderWindow*       win;
@@ -123,20 +126,10 @@ private:
 			, isBreakShot = true
 	;
 
-    static constexpr int        ballRad = 15;
-    static constexpr float      yOfs = ballRad * 2 - 1;
-    const float                 xOfs = sind(60) * yOfs - 1;
-	int		ofs = 6
-            , balls1un = 0
+	int		balls1un = 0
             , balls2un = 0
             , balls1unTot = 0
             , balls2unTot = 0
-	;
-	float	tableWidth = 1173
-			, tableHeight = 587
-            , teThick = 80
-            , firstBallCXOffset = 275
-            , pocketOffset = 42
 	;
     float   scale = 1
             , arrowSkew = 0

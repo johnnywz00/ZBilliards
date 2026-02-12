@@ -22,21 +22,22 @@ public:
 	
 	void update ();
 	
-	void close () {
+	void close ()
+	{
 		isDone = true;
 		window.close();
 	}
 	
 	void setRedrawColor (const Color& c) { redrawColor = c; }
 
-	bool					isDone;
-	Color                   redrawColor { Color::White };
-	Image                   icon;
 	RenderWindow            window;
-    TimedEventManager		timedMgr;
-    State            		state;
-    Clock            		clock;
-    Time             		elapsed;
+	TimedEventManager		timedMgr;
+	State            		state;
+	Clock            		clock;
+	Time             		elapsed;
+	Image                   icon;
+	Color                   redrawColor { Color::White };
+	bool					isDone;
 };
 
 
