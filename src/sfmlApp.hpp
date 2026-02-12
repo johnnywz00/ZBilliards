@@ -37,7 +37,7 @@ public:
 	Time             		elapsed;
 	Image                   icon;
 	Color                   redrawColor { Color::White };
-	bool					isDone;
+	bool					isDone = false;
 };
 
 
