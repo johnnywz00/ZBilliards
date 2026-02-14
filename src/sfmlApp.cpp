@@ -66,6 +66,8 @@ void FullscreenOnlyApp::update ()
                 break;
 				
 			case Event::MouseMoved:
+				adj = window.mapPixelToCoords(vecI(event.mouseMove.x,
+												   event.mouseMove.y));
 				state.mouseVec = toVecI(adj);
 				break;
 				
